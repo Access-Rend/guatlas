@@ -21,18 +21,73 @@ const SelectBar = ({ value, onChange, selectList }) => {
   );
 };
 
-const Detail = (tag) => {
+const Detail = ({tag, DatasetID}) => {
+    console.log(tag)
+    console.log(DatasetID)
+    console.log('/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv')
     if(tag == '') return<></>
-    if(tag == 'RNA') return(
+    if(tag == 'RNA') return(<div>
         <Row>
-            <Col span={24}><h1>DEG</h1></Col>
-            <CSVTable onClick={()=>{}} url={''}></CSVTable>
+            <Col span={12}>
+                <h1>DEG</h1>
+                <br/>
+                <CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv'} />
+            </Col>
+            <Col span={12}>
+                <h1>GSEA</h1>
+                <br/>
+                <CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.2.GSEA/GSEA_nogroup_20230601.csv'} />
+            </Col>
         </Row>
-    )
+
+        <Row>
+            <Col span={24}><h1>Cell Communication</h1></Col>
+            <Col span={12}>
+                <img
+                style={{ maxWidth: "80%" }}
+                src={
+                "/DB/2.Cellmap/" +
+                DatasetID +
+                "/2.2.scRNA/2.2.3.cellchat/count.png"
+                }
+                />
+            </Col>
+            <Col span={12}>
+                <img
+                style={{ maxWidth: "80%" }}
+                src={
+                "/DB/2.Cellmap/" +
+                DatasetID +
+                "/2.2.scRNA/2.2.3.cellchat/weight.png"
+                }
+                />
+            </Col>
+
+            <Col span={24}>
+                <CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.3.cellchat/cellchat_dfnet.csv'} />
+            </Col>
+        </Row>
+
+        <Row>
+            <Col span={24}><h1>TF regulatory network</h1></Col>
+            <Col span={11}><CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.4.pyscenic/nogroup_s5_celltype_Regulon_specific_score.csv'} /></Col>
+            <Col span={13}>
+            <img
+                style={{ maxWidth: "100%" }}
+                src={
+                "/DB/2.Cellmap/" +
+                DatasetID +
+                "/2.2.scRNA/2.2.4.pyscenic/s5_PlotRegulonRank_celltype.png"
+                }
+            />
+            </Col>
+        </Row>
+    </div>)
     if(tag == 'Spatial') return<></>
 }
 
 const SearchByCellMap = () => {
+
   let [organ, setOrgan] = useState(SelectData.organ_list[0]);
   let [cat, setCat] = useState(SelectData.category_list[0]);
   let [dataType, setDataType] = useState(SelectData.datatype_list[0]);
@@ -55,7 +110,7 @@ const SearchByCellMap = () => {
   const dataOnChange = onChange_gen(setDataType);
 
   const handleRecordClick = (record) => {
-    setID(record.DatasetID) // 写死，第几列
+    setID(record.DatasetID)
     console.log(record.DatasetID)
   };
 
@@ -129,27 +184,25 @@ const SearchByCellMap = () => {
           />
         </Col>
       </Row>
+      <br/>
 
       <Row>
-        <Col span={2} />
-        <Col span={6}>
-          <Button onChange={()=>{setDetailTag('RNA')}} size="large" type="primary" icon={<FullscreenOutlined />}>
+        <Col span={12}>
+          <Button onClick={()=>{setDetailTag('RNA')}} size="large" type="primary" icon={<FullscreenOutlined />}>
             Singile cell RNA result
           </Button>
         </Col>
-        <Col span={5} />
-        <Col span={6}>
-          <Button onChange={()=>{setDetailTag('Spatial')}} size="large" type="primary" icon={<FullscreenOutlined />}>
+        <Col span={12}>
+          <Button onClick={()=>{setDetailTag('Spatial')}} size="large" type="primary" icon={<FullscreenOutlined />}>
             Spatial Transcriptomic result
           </Button>
         </Col>
-        <Col span={2} />
       </Row>
+      <br/>
+      <hr />
+        
 
-
-      {/* <Row>
-        <Detail tag={detailTag}></Detail>
-      </Row> */}
+        <Detail tag={detailTag} DatasetID={DatasetID} />
     </div>
   );
 };
