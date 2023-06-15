@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SelectData } from "./SelectData";
 import { Row, Col, Radio, Table, Divider, Button, Space } from "antd";
-import { DownloadOutlined } from '@ant-design/icons'
+import { DownloadOutlined } from "@ant-design/icons";
 import { useCSVFromURL } from "../csv2obj";
 import CSVTable from "../components/CSVTable";
 // import { csv2obj } from '../csv2obj'
@@ -30,7 +30,7 @@ const SearchByCellMap = () => {
   let [organ, setOrgan] = useState(SelectData.organ_list[0]);
   let [cat, setCat] = useState(SelectData.category_list[0]);
   let [dataType, setDataType] = useState(SelectData.datatype_list[0]);
-  let [DatasetID, setID] = useState('PMID35657798_R010');
+  let [DatasetID, setID] = useState("PMID35657798_R010");
 
   const data = useCSVFromURL(
     "/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
@@ -46,6 +46,10 @@ const SearchByCellMap = () => {
   const organOnchange = onChange_gen(setOrgan);
   const catOnChange = onChange_gen(setCat);
   const dataOnChange = onChange_gen(setDataType);
+
+  const handleRecordClick = (record) => {
+    console.log(record);
+  };
 
   return (
     <div>
@@ -77,27 +81,62 @@ const SearchByCellMap = () => {
 
         <Col span={18}>
           {/* <DatasetTabel columns={SelectData.columns} dataSource={data} /> */}
-          <CSVTable url="/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv" />
+          <CSVTable
+            onClick={handleRecordClick}
+            url="/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
+          />
         </Col>
       </Row>
-        <Divider/>
-        <hr/>
-        <br/>
+      <Divider />
+      <hr />
+      <br />
 
-        <Row>
-            <Col span={16}><img style={{ maxWidth: '100%' }} src={'/DB/2.Cellmap/' + DatasetID + '/2.1.Cellmap/00.finalumap.png'}/></Col>
-            <Col span={8}><img style={{ maxWidth: '100%' }} src={'/DB/2.Cellmap/' + DatasetID + '/2.1.Cellmap/04umap_Group.png'}/></Col>
-            <Col span={12}><img style={{ maxWidth: '100%' }} src={'/DB/2.Cellmap/' + DatasetID + '/2.1.Cellmap/05Celltype_dopplot.png'}/></Col>
-            <Col span={12}><img style={{ maxWidth: '100%' }} src={'/DB/2.Cellmap/' + DatasetID + '/2.1.Cellmap/06dodge_bar.png'}/></Col>
-        </Row>
+      <Row>
+        <Col span={16}>
+          <img
+            style={{ maxWidth: "100%" }}
+            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/00.finalumap.png"}
+          />
+        </Col>
+        <Col span={8}>
+          <img
+            style={{ maxWidth: "100%" }}
+            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png"}
+          />
+        </Col>
+        <Col span={12}>
+          <img
+            style={{ maxWidth: "100%" }}
+            src={
+              "/DB/2.Cellmap/" +
+              DatasetID +
+              "/2.1.Cellmap/05Celltype_dopplot.png"
+            }
+          />
+        </Col>
+        <Col span={12}>
+          <img
+            style={{ maxWidth: "100%" }}
+            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"}
+          />
+        </Col>
+      </Row>
 
-        <Row>
-            <Col span={2}/>
-            <Col span={6}><Button size="large" type="primary" icon={<DownloadOutlined />}>Singile cell RNA result</Button></Col>
-            <Col span={5}/>
-            <Col span={6}><Button size="large" type="primary" icon={<DownloadOutlined />}>Spatial Transcriptomic result</Button></Col>
-            <Col span={2}/>
-        </Row>
+      <Row>
+        <Col span={2} />
+        <Col span={6}>
+          <Button size="large" type="primary" icon={<DownloadOutlined />}>
+            Singile cell RNA result
+          </Button>
+        </Col>
+        <Col span={5} />
+        <Col span={6}>
+          <Button size="large" type="primary" icon={<DownloadOutlined />}>
+            Spatial Transcriptomic result
+          </Button>
+        </Col>
+        <Col span={2} />
+      </Row>
     </div>
   );
 };
