@@ -1,0 +1,14 @@
+.App {
+  width: 92vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 3rem;
+  text-align: center;
+}
+
+.App-content {
+  flex: 1;
+  overflow: none; /* 添加滚动条以防止内容溢出 */
+}
