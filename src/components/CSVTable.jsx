@@ -1,7 +1,7 @@
 import { ProTable } from "@ant-design/pro-components";
 import { useCSVTableFormURL } from "../csv2obj";
 import { Input, Table } from "antd";
-import { InfoCircleFilled, InfoCircleOutlined } from "@ant-design/icons";
+import { MinusCircleOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
 export default function CSVTable(props) {
@@ -10,7 +10,7 @@ export default function CSVTable(props) {
 
   if (!data.length) return <></>;
 
-  return <TableContent selected={"selected"} data={data} onClick={onClick} />;
+  return <TableContent selected={selected} data={data} onClick={onClick} />;
 }
 
 const TableContent = (props) => {
@@ -89,9 +89,9 @@ const ClickableIcon = (props) => {
   return (
     <div onClick={onClick} style={{ display: "flex", placeContent: "center" }}>
       {selected ? (
-        <InfoCircleFilled style={{ fontSize: "24px" }} />
+        <CheckCircleTwoTone style={{ fontSize: "24px" }} />
       ) : (
-        <InfoCircleOutlined style={{ fontSize: "24px" }} />
+        <MinusCircleOutlined style={{ fontSize: "24px" }} />
       )}
     </div>
   );

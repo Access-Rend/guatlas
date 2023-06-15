@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { SelectData } from "./SelectData";
 import { Row, Col, Radio, Table, Divider, Button, Space } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+import { FullscreenOutlined } from "@ant-design/icons";
 import { useCSVFromURL } from "../csv2obj";
 import CSVTable from "../components/CSVTable";
-// import { csv2obj } from '../csv2obj'
-
-const DatasetTabel = ({ columns, dataSource }) => {
-  return <Table columns={columns} dataSource={dataSource}></Table>;
-};
 
 const SelectBar = ({ value, onChange, selectList }) => {
   return (
@@ -26,11 +21,23 @@ const SelectBar = ({ value, onChange, selectList }) => {
   );
 };
 
+const Detail = (tag) => {
+    if(tag == '') return<></>
+    if(tag == 'RNA') return(
+        <Row>
+            <Col span={24}><h1>DEG</h1></Col>
+            <CSVTable onClick={()=>{}} url={''}></CSVTable>
+        </Row>
+    )
+    if(tag == 'Spatial') return<></>
+}
+
 const SearchByCellMap = () => {
   let [organ, setOrgan] = useState(SelectData.organ_list[0]);
   let [cat, setCat] = useState(SelectData.category_list[0]);
   let [dataType, setDataType] = useState(SelectData.datatype_list[0]);
   let [DatasetID, setID] = useState("PMID35657798_R010");
+  let [detailTag, setDetailTag] = useState('')
 
   const data = useCSVFromURL(
     "/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
@@ -48,7 +55,8 @@ const SearchByCellMap = () => {
   const dataOnChange = onChange_gen(setDataType);
 
   const handleRecordClick = (record) => {
-    console.log(record);
+    setID(record.DatasetID) // 写死，第几列
+    console.log(record.DatasetID)
   };
 
   return (
@@ -80,9 +88,9 @@ const SearchByCellMap = () => {
         </Col>
 
         <Col span={18}>
-          {/* <DatasetTabel columns={SelectData.columns} dataSource={data} /> */}
           <CSVTable
             onClick={handleRecordClick}
+            selected={DatasetID}
             url="/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
           />
         </Col>
@@ -125,18 +133,23 @@ const SearchByCellMap = () => {
       <Row>
         <Col span={2} />
         <Col span={6}>
-          <Button size="large" type="primary" icon={<DownloadOutlined />}>
+          <Button onChange={()=>{setDetailTag('RNA')}} size="large" type="primary" icon={<FullscreenOutlined />}>
             Singile cell RNA result
           </Button>
         </Col>
         <Col span={5} />
         <Col span={6}>
-          <Button size="large" type="primary" icon={<DownloadOutlined />}>
+          <Button onChange={()=>{setDetailTag('Spatial')}} size="large" type="primary" icon={<FullscreenOutlined />}>
             Spatial Transcriptomic result
           </Button>
         </Col>
         <Col span={2} />
       </Row>
+
+
+      {/* <Row>
+        <Detail tag={detailTag}></Detail>
+      </Row> */}
     </div>
   );
 };
