@@ -1,20 +1,20 @@
 import { ProTable } from "@ant-design/pro-components";
 import { useCSVTableFormURL } from "../csv2obj";
 import { Input, Table } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleFilled, InfoCircleOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
 export default function CSVTable(props) {
-  const { url, onClick } = props;
+  const { url, onClick, selected } = props;
   const data = useCSVTableFormURL(url);
 
   if (!data.length) return <></>;
 
-  return <TableContent data={data} onClick={onClick} />;
+  return <TableContent selected={"selected"} data={data} onClick={onClick} />;
 }
 
 const TableContent = (props) => {
-  const { data: rawData, onClick } = props;
+  const { data: rawData, onClick, selected } = props;
 
   const headers = rawData[0];
   const records = rawData.slice(1, rawData.length);
@@ -34,12 +34,15 @@ const TableContent = (props) => {
 
   const dataFormat = data.map((record, index) => {
     const temp = {
-      Select: <ClickableIcon onClick={() => onClick?.(record)} />,
       key: index,
     };
     record.forEach((value, index) => {
       temp[headers[index]] = record[index];
     });
+    const isSelected = selected == temp.DatasetID;
+    temp["Select"] = (
+      <ClickableIcon selected={isSelected} onClick={() => onClick?.(temp)} />
+    );
     return temp;
   });
 
@@ -82,10 +85,14 @@ const TableContent = (props) => {
 };
 
 const ClickableIcon = (props) => {
-  const { onClick } = props;
+  const { onClick, selected } = props;
   return (
     <div onClick={onClick} style={{ display: "flex", placeContent: "center" }}>
-      <InfoCircleOutlined style={{ fontSize: "24px" }} />{" "}
+      {selected ? (
+        <InfoCircleFilled style={{ fontSize: "24px" }} />
+      ) : (
+        <InfoCircleOutlined style={{ fontSize: "24px" }} />
+      )}
     </div>
   );
 };
