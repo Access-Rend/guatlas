@@ -251,6 +251,62 @@ const SelectData = {
             'Datatype': 'scRNA',
         }
     ],
+    columns: [
+        {
+          title: 'Datset ID',
+          dataIndex: 'Datset ID',
+          key: 'Datset ID',
+          render: (text) => (<a>{text}</a>),
+        },
+        {
+          title: 'Organ',
+          dataIndex: 'Organ',
+          key: 'Organ',
+        },
+        {
+          title: 'Collection',
+          dataIndex: 'Collection',
+          key: 'Collection',
+        },
+        {
+          title: 'Category',
+          key: 'Category',
+          dataIndex: 'Category',
+        //   render: (_, { tags }) => (
+        //     <>
+        //       {tags.map((tag) => {
+        //         let color = tag.length > 5 ? 'geekblue' : 'green';
+        //         if (tag === 'loser') {
+        //           color = 'volcano';
+        //         }
+        //         return (
+        //           <Tag color={color} key={tag}>
+        //             {tag.toUpperCase()}
+        //           </Tag>
+        //         );
+        //       })}
+        //     </>
+        //   ),
+        },
+        {
+            title: 'Groups',
+            key: 'Groups',
+          //   render: (_, record) => (
+          //     <Space size="middle">
+          //       <a>Invite {record.name}</a>
+          //       <a>Delete</a>
+          //     </Space>
+          //   ),
+        },
+        {
+            title: 'Cell Number',
+            key: 'Cell Number',
+        },
+        {
+            title: 'Data Type',
+            key: 'Data Type',
+        },
+    ],
 }
 
 export {SelectData}

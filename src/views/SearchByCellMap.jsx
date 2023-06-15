@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { SelectData } from "./SelectData";
-import { Row, Col, Radio } from "antd";
+import { Row, Col, Radio, Table } from "antd";
 import { useCSVFromURL } from "../csv2obj";
 // import { csv2obj } from '../csv2obj'
 
-const DatasetTabel = () => {
-  return <div></div>;
+const DatasetTabel = ({columns, dataSource}) => {
+  return (
+    <Table columns={columns} dataSource={dataSource}></Table>
+  );
 };
 
 const SelectBar = ({ value, onChange, selectList }) => {
@@ -29,16 +31,11 @@ const SearchByCellMap = () => {
   let [cat, setCat] = useState(SelectData.category_list[0]);
   let [dataType, setDataType] = useState(SelectData.datatype_list[0]);
   let [DatasetList, setDL] = useState([]);
-  const data = useCSVFromURL("/DB/03.all-sample-group-category-20230606.csv");
-  console.log(data);
 
-  useEffect(() => {
-    // let res = await fetch('/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv')
-    // let csv = await res.blob()
-    // console.log(csv)
-    // setDL([])
-    // console.log(DatasetList)
-  }, []);
+  const data = useCSVFromURL("/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv");
+
+
+  console.log(data)
 
   const onChange_gen = (setter) => {
     return (e) => {
@@ -78,7 +75,7 @@ const SearchByCellMap = () => {
         </Col>
 
         <Col span={18}>
-          <DatasetTabel />
+          <DatasetTabel columns={SelectData.columns} dataSource={data}/>
         </Col>
       </Row>
     </div>
