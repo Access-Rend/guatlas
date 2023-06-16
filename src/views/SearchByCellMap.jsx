@@ -21,10 +21,7 @@ const SelectBar = ({ value, onChange, selectList }) => {
   );
 };
 
-const Detail = ({tag, DatasetID}) => {
-    console.log(tag)
-    console.log(DatasetID)
-    console.log('/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv')
+const Detail = ({ tag, DatasetID }) => {
     if(tag == '') return<></>
     if(tag == 'RNA') return(<div>
         <Row>
@@ -83,7 +80,23 @@ const Detail = ({tag, DatasetID}) => {
             </Col>
         </Row>
     </div>)
-    if(tag == 'Spatial') return<></>
+    if(tag == 'Spatial') return(<div>
+      <Row>
+            <Col span={12}>
+                <h1>Spatial localization of celltypes</h1>
+                <br/>
+                {/* <CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv'} /> */}
+            </Col>
+
+            <Col span={12}>
+                <h1>Spatial communication of celltypes</h1>
+                <br/>
+                {/* <CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.2.GSEA/GSEA_nogroup_20230601.csv'} /> */}
+            </Col>
+      </Row>
+
+
+    </div>)
 }
 
 const SearchByCellMap = () => {
