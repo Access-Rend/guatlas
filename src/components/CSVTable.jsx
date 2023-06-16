@@ -1,64 +1,50 @@
 import { ProTable } from "@ant-design/pro-components";
 import { useCSVTableFormURL } from "../csv2obj";
-import { Input, Table } from "antd";
 import { MinusCircleOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { Input } from "antd";
 
 export default function CSVTable(props) {
   const { url, onClick, selected } = props;
-  const data = useCSVTableFormURL(url);
+  const csv = useCSVTableFormURL(url);
+  const [records, setRecords] = useState([]);
 
-  if (!data.length) return <></>;
+  useEffect(() => {
+    setRecords(csv);
+  }, [csv]);
 
-  return <TableContent selected={selected} data={data} onClick={onClick} />;
-}
-
-const TableContent = (props) => {
-  const { data: rawData, onClick, selected } = props;
-
-  const headers = rawData[0];
-  const records = rawData.slice(1, rawData.length);
-
-  const [data, setData] = useState(records);
-  const { Search } = Input;
-
-  const expHeaders = ["Select", ...headers];
-
-  const columns = expHeaders.map((header) => {
+  const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
     return {
-      title: header,
-      dataIndex: header,
-      key: header,
+      title: key,
+      dataIndex: key,
+      key: key,
     };
   });
 
-  const dataFormat = data.map((record, index) => {
-    const temp = {
-      key: index,
-    };
-    record.forEach((value, index) => {
-      temp[headers[index]] = record[index];
-    });
-    const isSelected = selected == temp.DatasetID;
-    temp["Select"] = (
-      <ClickableIcon selected={isSelected} onClick={() => onClick?.(temp)} />
-    );
-    return temp;
-  });
+  const headers = [
+    {
+      title: "Select",
+      key: "option",
+      render: (text, record, _, action) => {
+        const isSelected = selected == record.DatasetID;
+        return (
+          <ClickableIcon
+            selected={isSelected}
+            onClick={() => onClick?.(record)}
+          />
+        );
+      },
+    },
+    ...recordHeaders,
+  ];
 
-  const handleSearch = (str) => {
-    const reg = new RegExp(
-      str.split(" ").map((s) => `(?=.*${s})`),
-      "i"
-    );
-    const filteredData = records.filter((record) => {
-      return JSON.stringify(record).match(reg);
-    });
-    setData(filteredData);
-  };
+  const dataFormat = records.map((record, index) => {
+    record.key = index;
+    return record;
+  });
 
   const configs = {
-    columns: columns,
+    columns: headers,
     dataSource: dataFormat,
     search: false,
   };
@@ -70,17 +56,36 @@ const TableContent = (props) => {
     padding: "4px",
   };
 
+  const handleSearch = (str) => {
+    const reg = new RegExp(
+      str.split(" ").map((s) => `(?=.*${s})`),
+      "i"
+    );
+    const filteredData = csv.filter((record) => {
+      return JSON.stringify(record).match(reg);
+    });
+    setRecords(filteredData);
+  };
+
   return (
     <div style={tableStyle}>
-      <Search
-        placeholder="input search text"
-        allowClear
-        enterButton="Search"
-        size="large"
-        onSearch={handleSearch}
-      />
+      <SearchInput onSearch={handleSearch} />
       <ProTable {...configs}></ProTable>
     </div>
+  );
+}
+
+const SearchInput = (props) => {
+  const { onSearch } = props;
+  const { Search } = Input;
+  return (
+    <Search
+      placeholder="input search text"
+      allowClear
+      enterButton="Search"
+      size="large"
+      onSearch={onSearch}
+    />
   );
 };
 
