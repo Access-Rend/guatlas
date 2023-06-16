@@ -23,6 +23,15 @@ const SelectBar = ({ value, onChange, selectList }) => {
 };
 
 const Detail = ({ tag, DatasetID }) => {
+    let [RCDTList, setRCDTList] = useState([])
+    useEffect(() => {
+      //todo
+      // 文件夹：'DB/2.Cellmap/' + DatasetID + '/2.3.ST/2.3.1.RCTD'
+      // 文件夹内全是图
+      // 点击下拉菜单，选择文件夹名
+      // 展示文件夹下所有图，搜索框搜索图片名称
+    })
+
     if(tag == '') return<></>
     if(tag == 'RNA') return(<div>
         <Row>
@@ -82,7 +91,7 @@ const Detail = ({ tag, DatasetID }) => {
             <Col span={12}>
                 <h1>Spatial localization of celltypes</h1>
                 <br/>
-                {/* <CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv'} /> */}
+                <ImgBar ImageList={RCDTList}/>
             </Col>
 
             <Col span={12}>
