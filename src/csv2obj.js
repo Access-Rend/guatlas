@@ -11,7 +11,6 @@ const useCSVFromURL = (url) => {
       const csv = await res.text();
       setData(readString(csv));
     };
-    console.log("f");
     fetchData();
   }, [url]);
 
