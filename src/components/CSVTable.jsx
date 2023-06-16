@@ -11,7 +11,7 @@ export default function CSVTable(props) {
 
   useEffect(() => {
     setRecords(csv);
-  }, csv);
+  }, [csv]);
 
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
     return {
@@ -38,9 +38,14 @@ export default function CSVTable(props) {
     ...recordHeaders,
   ];
 
+  const dataFormat = records.map((record, index) => {
+    record.key = index;
+    return record;
+  });
+
   const configs = {
     columns: headers,
-    dataSource: records,
+    dataSource: dataFormat,
     search: false,
   };
 
