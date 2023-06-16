@@ -2,7 +2,7 @@ import { ProTable } from "@ant-design/pro-components";
 import { useCSVTableFormURL } from "../csv2obj";
 import { MinusCircleOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { Input } from "antd";
+import { Image, Input } from "antd";
 
 export default function CSVTable(props) {
   const { url, onClick, selected } = props;
@@ -37,6 +37,16 @@ export default function CSVTable(props) {
     },
     ...recordHeaders,
   ];
+
+  const imgIndex = headers.findIndex((header) => header.title == "Image");
+
+  headers[imgIndex] = {
+    title: "Image",
+    key: "Image",
+    render: (text, record, _, action) => {
+      return <Image src={`/DB/${record.Image}`} />;
+    },
+  };
 
   const dataFormat = records.map((record, index) => {
     record.key = index;
