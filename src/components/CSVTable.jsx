@@ -43,12 +43,6 @@ export default function CSVTable(props) {
     return record;
   });
 
-  const configs = {
-    columns: headers,
-    dataSource: dataFormat,
-    search: false,
-  };
-
   const tableStyle = {
     display: "flex",
     flexDirection: "column",
@@ -65,6 +59,13 @@ export default function CSVTable(props) {
       return JSON.stringify(record).match(reg);
     });
     setRecords(filteredData);
+  };
+
+  const configs = {
+    columns: headers,
+    dataSource: dataFormat,
+    search: false,
+    scroll: { x: "100%" },
   };
 
   return (
