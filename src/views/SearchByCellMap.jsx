@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { SelectData } from "./SelectData";
-import { Row, Col, Radio, Table, Divider, Button, Space } from "antd";
+import { Row, Col, Radio, Table, Divider, Button, Space, Image } from "antd";
 import { FullscreenOutlined } from "@ant-design/icons";
 import { useCSVFromURL } from "../csv2obj";
 import CSVTable from "../components/CSVTable";
+import { ImgBar } from "../components/ImgBar";
 
 const SelectBar = ({ value, onChange, selectList }) => {
   return (
@@ -40,8 +41,9 @@ const Detail = ({ tag, DatasetID }) => {
         <Row>
             <Col span={24}><h1>Cell Communication</h1></Col>
             <Col span={12}>
-                <img
-                style={{ maxWidth: "80%" }}
+              <h2>count</h2>
+                <Image
+                style={{ width: "80%" }}
                 src={
                 "/DB/2.Cellmap/" +
                 DatasetID +
@@ -50,8 +52,9 @@ const Detail = ({ tag, DatasetID }) => {
                 />
             </Col>
             <Col span={12}>
-                <img
-                style={{ maxWidth: "80%" }}
+            <h2>weight</h2>
+                <Image
+                style={{ width: "80%" }}
                 src={
                 "/DB/2.Cellmap/" +
                 DatasetID +
@@ -66,18 +69,12 @@ const Detail = ({ tag, DatasetID }) => {
         </Row>
 
         <Row>
-            <Col span={24}><h1>TF regulatory network</h1></Col>
-            <Col span={11}><CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.4.pyscenic/nogroup_s5_celltype_Regulon_specific_score.csv'} /></Col>
-            <Col span={13}>
-            <img
-                style={{ maxWidth: "100%" }}
-                src={
-                "/DB/2.Cellmap/" +
-                DatasetID +
-                "/2.2.scRNA/2.2.4.pyscenic/s5_PlotRegulonRank_celltype.png"
-                }
-            />
+          {/* todo 滑动图 */}
+            <Col span={24}><h1>TF regulatory network</h1></Col> 
+            <Col span={24}>
+              <ImgBar ImageList={["/DB/2.Cellmap/" + DatasetID + "/2.2.scRNA/2.2.4.pyscenic/s5_PlotRegulonRank_celltype.png"] }/>
             </Col>
+            <Col span={24}><CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.4.pyscenic/nogroup_s5_celltype_Regulon_specific_score.csv'} /></Col>
         </Row>
     </div>)
     if(tag == 'Spatial') return(<div>
@@ -131,7 +128,7 @@ const SearchByCellMap = () => {
     <div>
       <Row>
         <Col span={6}>
-          <img src="/icon/cell_map.png" style={{ maxWidth: "100%" }}></img>
+          <img src="/icon/cell_map.png" style={{ width: "100%" }}></img>
 
           <div style={styles.SelectTitle}>Organ</div>
           <SelectBar
@@ -169,20 +166,20 @@ const SearchByCellMap = () => {
 
       <Row>
         <Col span={16}>
-          <img
-            style={{ maxWidth: "100%" }}
+          <Image
+            style={{ width: "100%" }}
             src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/00.finalumap.png"}
           />
         </Col>
         <Col span={8}>
-          <img
-            style={{ maxWidth: "100%" }}
+          <Image
+            style={{ width: "100%" }}
             src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png"}
           />
         </Col>
         <Col span={12}>
-          <img
-            style={{ maxWidth: "100%" }}
+          <Image
+            style={{ width: "100%" }}
             src={
               "/DB/2.Cellmap/" +
               DatasetID +
@@ -191,8 +188,8 @@ const SearchByCellMap = () => {
           />
         </Col>
         <Col span={12}>
-          <img
-            style={{ maxWidth: "100%" }}
+          <Image
+            style={{ width: "100%" }}
             src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"}
           />
         </Col>
