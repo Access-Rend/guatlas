@@ -13,8 +13,6 @@ export default function CSVTable(props) {
     setRecords(csv);
   }, [csv]);
 
-  if (records.length == 0) return <></>;
-
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
     return {
       title: key,
@@ -23,27 +21,29 @@ export default function CSVTable(props) {
     };
   });
 
-  const headers = [
-    {
-      title: "Select",
-      key: "option",
-      render: (text, record, _, action) => {
-        const isSelected = selected == record.DatasetID;
-        return (
-          <ClickableIcon
-            selected={isSelected}
-            onClick={() => onClick?.(record)}
-          />
-        );
-      },
-    },
-    ...recordHeaders,
-  ];
+  const selectableHeader = records.length
+    ? {
+        title: "Select",
+        key: "option",
+        render: (text, record, _, action) => {
+          const isSelected = selected === record.DatasetID;
+          return (
+            <ClickableIcon
+              selected={isSelected}
+              onClick={() => onClick?.(record)}
+            />
+          );
+        },
+      }
+    : null;
 
-  const imgIndex = headers.findIndex((header) => header.title == "Image");
+  const extHeaders = [selectableHeader, ...recordHeaders];
+  const headersFormat = extHeaders.filter((header) => header);
+
+  const imgIndex = headersFormat.findIndex((header) => header.title == "Image");
 
   if (imgIndex > 0) {
-    headers[imgIndex] = {
+    headersFormat[imgIndex] = {
       title: "Image",
       key: "Image",
       render: (text, record, _, action) => {
@@ -76,7 +76,7 @@ export default function CSVTable(props) {
   };
 
   const configs = {
-    columns: headers,
+    columns: headersFormat,
     dataSource: dataFormat,
     search: false,
     scroll: { x: "100%" },
