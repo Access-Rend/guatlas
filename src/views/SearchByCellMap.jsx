@@ -1,11 +1,159 @@
-import React, { useEffect, useState } from "react";
-import { SelectData } from "./SelectData";
-import { Row, Col, Radio, Divider, Button, Space, Image, Dropdown } from "antd";
-import { FullscreenOutlined } from "@ant-design/icons";
-import { useCSVFromURL } from "../csv2obj";
-import CSVTable from "../components/CSVTable";
-import { useDBFolder } from "../hooks/DBAPI";
-import { ImgBar } from "../components/ImgBar";
+import React, { useEffect, useState } from "react"
+import { SelectData } from "./SelectData"
+import { Row, Col, Radio, Divider, Button, Space, Image, Dropdown } from "antd"
+import { FullscreenOutlined } from "@ant-design/icons"
+import { useCSVFromURL } from "../csv2obj"
+import CSVTable from "../components/CSVTable"
+import { useDBFolder } from "../hooks/DBAPI"
+import { ImgBar } from "../components/ImgBar"
+
+const SearchByCellMap = () => {
+  let [organ, setOrgan] = useState(SelectData.organ_list[0])
+  let [cat, setCat] = useState(SelectData.category_list[0])
+  let [dataType, setDataType] = useState(SelectData.datatype_list[0])
+  let [DatasetID, setID] = useState("PMID35657798_R010")
+  let [detailTag, setDetailTag] = useState("")
+
+  const data = useCSVFromURL(
+    "/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
+  )
+
+  // console.log(data)
+
+  const onChange_gen = (setter) => {
+    return (e) => {
+      setter(e.target.value)
+    }
+  }
+
+  const organOnchange = onChange_gen(setOrgan)
+  const catOnChange = onChange_gen(setCat)
+  const dataOnChange = onChange_gen(setDataType)
+
+  const handleRecordClick = (record) => {
+    setID(record.DatasetID)
+    console.log(record.DatasetID)
+  }
+
+  return (
+    <div>
+      <Row>
+        <Col span={6}>
+          <img src="/icon/cell_map.png" style={{ width: "100%" }}></img>
+
+          <div style={styles.SelectTitle}>Organ</div>
+          <Row>
+            <SelectBar
+              value={organ}
+              onChange={organOnchange}
+              selectList={SelectData.organ_list}
+              direction="vertical"
+            />
+          </Row>
+
+          <div style={styles.SelectTitle}>Category</div>
+
+          <Row>
+            <SelectBar
+              value={cat}
+              onChange={catOnChange}
+              selectList={SelectData.category_list}
+            />
+          </Row>
+
+          <div style={styles.SelectTitle}>Data Type</div>
+          <Row>
+            <SelectBar
+              value={dataType}
+              onChange={dataOnChange}
+              filter={[organ,cat,dataType]}
+              selectList={SelectData.datatype_list}
+            />
+          </Row>
+        </Col>
+
+        <Col span={18}>
+          <CSVTable
+            onClick={handleRecordClick}
+            selected={DatasetID}
+            filter={[organ,cat,dataType]}
+            url="/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
+          />
+        </Col>
+      </Row>
+      <Divider />
+      <hr />
+      <br />
+
+      <Row>
+        <Col span={16}>
+          <Image
+            style={{ width: "100%" }}
+            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/00.finalumap.png"}
+            fallback="/images/error.png"
+          />
+        </Col>
+        <Col span={8}>
+          <Image
+            style={{ width: "100%" }}
+            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png"}
+            fallback="/images/error.png"
+          />
+        </Col>
+        <Col span={12}>
+          <Image
+            style={{ width: "100%" }}
+            src={
+              "/DB/2.Cellmap/" +
+              DatasetID +
+              "/2.1.Cellmap/05Celltype_dopplot.png"
+            }
+            fallback="/images/error.png"
+          />
+        </Col>
+        <Col span={12}>
+          <Image
+            style={{ width: "100%" }}
+            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"}
+            fallback="/images/error.png"
+          />
+        </Col>
+      </Row>
+      <br />
+
+      <Row>
+        <Col span={12}>
+          <Button
+            onClick={() => {
+              setDetailTag("RNA")
+            }}
+            size="large"
+            type="primary"
+            icon={<FullscreenOutlined />}
+          >
+            Singile cell RNA result
+          </Button>
+        </Col>
+        <Col span={12}>
+          <Button
+            onClick={() => {
+              setDetailTag("Spatial")
+            }}
+            size="large"
+            type="primary"
+            icon={<FullscreenOutlined />}
+          >
+            Spatial Transcriptomic result
+          </Button>
+        </Col>
+      </Row>
+      <br />
+      <hr />
+
+      <Detail tag={detailTag} DatasetID={DatasetID} />
+    </div>
+  )
+}
 
 const SelectBar = ({ value, onChange, selectList, direction = "" }) => {
   return (
@@ -23,25 +171,25 @@ const SelectBar = ({ value, onChange, selectList, direction = "" }) => {
         ))}
       </Space>
     </Radio.Group>
-  );
-};
+  )
+}
 
 const Detail = ({ tag, DatasetID }) => {
-  let [RCDTFolderList, setRCDTFolderList] = useState([]);
-  let [RCDTImgList, setRCDTImgList] = useState([]);
+  let [RCDTFolderList, setRCDTFolderList] = useState([])
+  let [RCDTImgList, setRCDTImgList] = useState([])
 
-  let [folderName, setFolderName] = useState("");
-  let fl = useDBFolder("2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD");
+  let [folderName, setFolderName] = useState("")
+  let fl = useDBFolder("2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD")
   let il = useDBFolder(
     "2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD" + folderName
-  );
+  )
 
   useEffect(() => {
-    setRCDTFolderList(fl);
-    setRCDTFolderList(il);
-  }, [DatasetID]);
+    setRCDTFolderList(fl)
+    setRCDTFolderList(il)
+  }, [DatasetID])
 
-  if (tag == "") return <></>;
+  if (tag == "") return <></>
   if (tag == "RNA")
     return (
       <div>
@@ -139,7 +287,7 @@ const Detail = ({ tag, DatasetID }) => {
           </Col>
         </Row>
       </div>
-    );
+    )
   if (tag == "Spatial")
     return (
       <div>
@@ -198,158 +346,10 @@ const Detail = ({ tag, DatasetID }) => {
           </Col>
         </Row>
       </div>
-    );
-};
+    )
+}
 
-const SearchByCellMap = () => {
-  let [organ, setOrgan] = useState(SelectData.organ_list[0]);
-  let [cat, setCat] = useState(SelectData.category_list[0]);
-  let [dataType, setDataType] = useState(SelectData.datatype_list[0]);
-  let [DatasetID, setID] = useState("PMID35657798_R010");
-  let [detailTag, setDetailTag] = useState("");
-
-  const data = useCSVFromURL(
-    "/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
-  );
-
-  // console.log(data);
-
-  const onChange_gen = (setter) => {
-    return (e) => {
-      setter(e.target.value);
-    };
-  };
-
-  const organOnchange = onChange_gen(setOrgan);
-  const catOnChange = onChange_gen(setCat);
-  const dataOnChange = onChange_gen(setDataType);
-
-  const handleRecordClick = (record) => {
-    setID(record.DatasetID);
-    console.log(record.DatasetID);
-  };
-
-  return (
-    <div>
-      <Row>
-        <Col span={6}>
-          <img src="/icon/cell_map.png" style={{ width: "100%" }}></img>
-
-          <div style={styles.SelectTitle}>Organ</div>
-          <Row>
-            <SelectBar
-              value={organ}
-              onChange={organOnchange}
-              selectList={SelectData.organ_list}
-              direction="vertical"
-            />
-          </Row>
-
-          <div style={styles.SelectTitle}>Category</div>
-
-          <Row>
-            <SelectBar
-              value={cat}
-              onChange={catOnChange}
-              selectList={SelectData.category_list}
-            />
-          </Row>
-
-          <div style={styles.SelectTitle}>Data Type</div>
-          <Row>
-            <SelectBar
-              value={dataType}
-              onChange={dataOnChange}
-              filter={[organ,cat,dataType]}
-              selectList={SelectData.datatype_list}
-            />
-          </Row>
-        </Col>
-
-        <Col span={18}>
-          <CSVTable
-            onClick={handleRecordClick}
-            selected={DatasetID}
-            filter={[organ,cat,dataType]}
-            url="/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
-          />
-        </Col>
-      </Row>
-      <Divider />
-      <hr />
-      <br />
-
-      <Row>
-        <Col span={16}>
-          <Image
-            style={{ width: "100%" }}
-            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/00.finalumap.png"}
-            fallback="/images/error.png"
-          />
-        </Col>
-        <Col span={8}>
-          <Image
-            style={{ width: "100%" }}
-            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png"}
-            fallback="/images/error.png"
-          />
-        </Col>
-        <Col span={12}>
-          <Image
-            style={{ width: "100%" }}
-            src={
-              "/DB/2.Cellmap/" +
-              DatasetID +
-              "/2.1.Cellmap/05Celltype_dopplot.png"
-            }
-            fallback="/images/error.png"
-          />
-        </Col>
-        <Col span={12}>
-          <Image
-            style={{ width: "100%" }}
-            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"}
-            fallback="/images/error.png"
-          />
-        </Col>
-      </Row>
-      <br />
-
-      <Row>
-        <Col span={12}>
-          <Button
-            onClick={() => {
-              setDetailTag("RNA");
-            }}
-            size="large"
-            type="primary"
-            icon={<FullscreenOutlined />}
-          >
-            Singile cell RNA result
-          </Button>
-        </Col>
-        <Col span={12}>
-          <Button
-            onClick={() => {
-              setDetailTag("Spatial");
-            }}
-            size="large"
-            type="primary"
-            icon={<FullscreenOutlined />}
-          >
-            Spatial Transcriptomic result
-          </Button>
-        </Col>
-      </Row>
-      <br />
-      <hr />
-
-      <Detail tag={detailTag} DatasetID={DatasetID} />
-    </div>
-  );
-};
-
-export default SearchByCellMap;
+export default SearchByCellMap
 
 const styles = {
   SelectTitle: {
@@ -357,4 +357,4 @@ const styles = {
     textAlign: "left",
     fontWeight: "500",
   },
-};
+}
