@@ -6,12 +6,11 @@ const useCSVFromURL = (url) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       const res = await fetch(url);
       const csv = await res.text();
-      setData(readString(csv));
-    };
-    fetchData();
+      setData(readString(csv).data);
+    })();
   }, [url]);
 
   return data;
@@ -22,22 +21,22 @@ const useCSVTableFormURL = (url) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    if (csv.data) {
-      const headers = csv.data[0];
-      const records = csv.data.slice(1, csv.data.length);
+    if (!csv.length) return;
 
-      headers[0] = "Index";
+    const headers = csv[0];
+    const records = csv.slice(1, csv.length);
 
-      const dataFormat = records.map((record, index) => {
-        const temp = {};
-        record.forEach((value, index) => {
-          temp[headers[index]] = record[index];
-        });
-        return temp;
+    headers[0] = "Index";
+
+    const dataFormat = records.map((record, index) => {
+      const temp = {};
+      record.forEach((value, index) => {
+        temp[headers[index]] = record[index];
       });
+      return temp;
+    });
 
-      setData(dataFormat);
-    }
+    setData(dataFormat);
   }, [csv]);
 
   return data;
