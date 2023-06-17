@@ -11,7 +11,7 @@ const SearchByCellMap = () => {
   let [organ, setOrgan] = useState(SelectData.organ_list[0])
   let [cat, setCat] = useState(SelectData.category_list[0])
   let [dataType, setDataType] = useState(SelectData.datatype_list[0])
-  let [DatasetID, setID] = useState("PMID35657798_R010")
+  let [DatasetID, setID] = useState("PMID34099557_R007")
   let [detailTag, setDetailTag] = useState("")
 
   const data = useCSVFromURL(
@@ -297,7 +297,7 @@ const Detail = ({ tag, DatasetID }) => {
             {RCDTFolderList.length === 0 ? (
               <div></div>
             ) : (
-              <Dropdown menu={{item:[
+              <Dropdown menu={{items:[
                 {
                   key: '1',
                   label: (
