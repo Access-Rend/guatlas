@@ -11,7 +11,12 @@ export default function CSVTable(props) {
 
   useEffect(() => {
     setRecords(csv);
+    handleSearch(filter.join(" "));
   }, [csv]);
+
+  useEffect(() => {
+    handleSearch(filter.join(" "));
+  }, [filter]);
 
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
     return {
@@ -66,7 +71,10 @@ export default function CSVTable(props) {
 
   const handleSearch = (str) => {
     const reg = new RegExp(
-      str.split(" ").map((s) => `(?=.*${s})`),
+      str
+        .split(" ")
+        .map((s) => `(?=.*${s})`)
+        .join(""),
       "i"
     );
     const filteredData = csv.filter((record) => {
@@ -74,10 +82,6 @@ export default function CSVTable(props) {
     });
     setRecords(filteredData);
   };
-
-  useEffect(() => {
-    handleSearch(filter.join(" "));
-  }, [filter]);
 
   const configs = {
     columns: headersFormat,
