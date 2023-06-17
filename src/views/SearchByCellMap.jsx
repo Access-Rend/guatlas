@@ -157,11 +157,7 @@ const Detail = ({ tag, DatasetID }) => {
           </Col>
           <Col span={12}>SearchBar</Col>
           <Col span={24}>
-            {RCDTImgList.length === 0 ? (
-              <div>Empty Data</div>
-            ) : (
-              <ImgBar ImageList={RCDTImgList} />
-            )}
+            <ImgBar ImageList={RCDTImgList} />
           </Col>
 
           <Col span={24}>
@@ -264,6 +260,7 @@ const SearchByCellMap = () => {
             <SelectBar
               value={dataType}
               onChange={dataOnChange}
+              filter={[organ,cat,dataType]}
               selectList={SelectData.datatype_list}
             />
           </Row>
