@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Image, Input } from "antd";
 
 export default function CSVTable(props) {
-  const { url, onClick, selected, filter } = props;
+  const { url, onClick, selected, filter = [] } = props;
   const csv = useCSVTableFormURL(url);
   const [records, setRecords] = useState([]);
   const [search, setSearch] = useState("");
