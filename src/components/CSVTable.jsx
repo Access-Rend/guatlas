@@ -80,6 +80,7 @@ export default function CSVTable(props) {
     dataSource: dataFormat,
     search: false,
     scroll: { x: "100%" },
+    pagination: { pageSize: 10 },
   };
 
   return (
