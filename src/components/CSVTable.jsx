@@ -5,13 +5,25 @@ import { useEffect, useState } from "react";
 import { Image, Input } from "antd";
 
 export default function CSVTable(props) {
-  const { url, onClick, selected } = props;
+  const { url, onClick, selected, filter } = props;
   const csv = useCSVTableFormURL(url);
   const [records, setRecords] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setRecords(csv);
   }, [csv]);
+
+  useEffect(() => {
+    const reg = new RegExp(
+      [...search.split(" "), ...filter].map((s) => `(?=.*${s})`).join(""),
+      "i"
+    );
+    const filteredData = csv.filter((record) => {
+      return JSON.stringify(record).match(reg);
+    });
+    setRecords(filteredData);
+  }, [csv, search, filter]);
 
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
     return {
@@ -64,15 +76,8 @@ export default function CSVTable(props) {
     padding: "4px",
   };
 
-  const handleSearch = (str) => {
-    const reg = new RegExp(
-      str.split(" ").map((s) => `(?=.*${s})`),
-      "i"
-    );
-    const filteredData = csv.filter((record) => {
-      return JSON.stringify(record).match(reg);
-    });
-    setRecords(filteredData);
+  const handleSearch = (e) => {
+    setSearch(e?.target.value);
   };
 
   const configs = {
@@ -85,14 +90,14 @@ export default function CSVTable(props) {
 
   return (
     <div style={tableStyle}>
-      <SearchInput onSearch={handleSearch} />
+      <SearchInput value={search} onChange={handleSearch} />
       <ProTable {...configs}></ProTable>
     </div>
   );
 }
 
 const SearchInput = (props) => {
-  const { onSearch } = props;
+  const { value, onChange } = props;
   const { Search } = Input;
   return (
     <Search
@@ -100,7 +105,8 @@ const SearchInput = (props) => {
       allowClear
       enterButton="Search"
       size="large"
-      onSearch={onSearch}
+      value={value}
+      onChange={onChange}
     />
   );
 };
