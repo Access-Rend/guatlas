@@ -4,8 +4,10 @@ import { MinusCircleOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Image, Input } from "antd";
 
+const defaultFilter = [];
+
 export default function CSVTable(props) {
-  const { url, onClick, selected, filter = [] } = props;
+  const { url, onClick, selected, filter = defaultFilter } = props;
   const csv = useCSVTableFormURL(url);
   const [records, setRecords] = useState([]);
   const [search, setSearch] = useState("");
@@ -22,6 +24,7 @@ export default function CSVTable(props) {
     const filteredData = csv.filter((record) => {
       return JSON.stringify(record).match(reg);
     });
+    console.log("max set", search, filter);
     setRecords(filteredData);
   }, [csv, search, filter]);
 
