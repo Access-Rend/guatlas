@@ -19,7 +19,6 @@ export default function CSVTable(props) {
       [...search.split(" "), ...filter].map((s) => `(?=.*${s})`).join(""),
       "i"
     );
-    console.log(reg);
     const filteredData = csv.filter((record) => {
       return JSON.stringify(record).match(reg);
     });
