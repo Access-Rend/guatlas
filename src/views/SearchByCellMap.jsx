@@ -177,17 +177,14 @@ const SelectBar = ({ value, onChange, selectList, direction = "" }) => {
 const Detail = ({ tag, DatasetID }) => {
   let [RCDTFolderList, setRCDTFolderList] = useState([])
   let [RCDTImgList, setRCDTImgList] = useState([])
-
-  let [folderName, setFolderName] = useState("")
+  let [folderName, setFolderName] = useState('')
+  
   let fl = useDBFolder("2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD")
-  let il = useDBFolder(
-    "2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD" + folderName
-  )
-
-  useEffect(() => {
+  let il = useDBFolder("2.Cellmap/" + fl[0] + "/2.3.ST/2.3.1.RCTD")
+  useEffect(() =>{
     setRCDTFolderList(fl)
-    setRCDTFolderList(il)
-  }, [DatasetID])
+    console.log(fl)
+  },[fl])
 
   if (tag == "") return <></>
   if (tag == "RNA")
@@ -300,12 +297,49 @@ const Detail = ({ tag, DatasetID }) => {
             {RCDTFolderList.length === 0 ? (
               <div></div>
             ) : (
-              <Dropdown menu={RCDTFolderList} />
+              <Dropdown menu={{item:[
+                {
+                  key: '1',
+                  label: (
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                      1st menu item
+                    </a>
+                  ),
+                },
+                {
+                  key: '2',
+                  label: (
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+                      2nd menu item (disabled)
+                    </a>
+                  ),
+                  disabled: true,
+                },
+                {
+                  key: '3',
+                  label: (
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+                      3rd menu item (disabled)
+                    </a>
+                  ),
+                  disabled: true,
+                },
+                {
+                  key: '4',
+                  danger: true,
+                  label: 'a danger item',
+                },
+              ]}}>     <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                Hover me
+              </Space>
+            </a> 
+            </Dropdown>
             )}
           </Col>
           <Col span={12}>SearchBar</Col>
           <Col span={24}>
-            <ImgBar ImageList={RCDTImgList} />
+            {/* <ImgBar ImageList={RCDTImgList} /> */}
           </Col>
 
           <Col span={24}>
