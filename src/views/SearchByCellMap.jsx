@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { SelectData } from "./SelectData"
 import { Row, Col, Radio, Divider, Button, Space, Image, Dropdown } from "antd"
-import { FullscreenOutlined } from "@ant-design/icons"
+import { DownOutlined, FullscreenOutlined } from "@ant-design/icons"
 import { useCSVFromURL } from "../csv2obj"
 import CSVTable from "../components/CSVTable"
 import { useDBFolder } from "../hooks/DBAPI"
@@ -183,7 +183,7 @@ const Detail = ({ tag, DatasetID }) => {
   let il = useDBFolder("2.Cellmap/" + fl[0] + "/2.3.ST/2.3.1.RCTD")
   useEffect(() =>{
     setRCDTFolderList(fl)
-    console.log(fl)
+    setRCDTImgList(il)
   },[fl])
 
   if (tag == "") return <></>
@@ -294,53 +294,23 @@ const Detail = ({ tag, DatasetID }) => {
             <br />
           </Col>
           <Col span={12}>
-            {RCDTFolderList.length === 0 ? (
-              <div></div>
-            ) : (
-              <Dropdown menu={{items:[
-                {
-                  key: '1',
-                  label: (
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                      1st menu item
-                    </a>
-                  ),
-                },
-                {
-                  key: '2',
-                  label: (
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                      2nd menu item (disabled)
-                    </a>
-                  ),
-                  disabled: true,
-                },
-                {
-                  key: '3',
-                  label: (
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                      3rd menu item (disabled)
-                    </a>
-                  ),
-                  disabled: true,
-                },
-                {
-                  key: '4',
-                  danger: true,
-                  label: 'a danger item',
-                },
-              ]}}>     <a onClick={(e) => e.preventDefault()}>
-              <Space>
-                Hover me
-              </Space>
-            </a> 
-            </Dropdown>
+            {RCDTFolderList.length === 0 ? (<div></div>) : (
+                <Dropdown menu={{ items: RCDTFolderList.map((fname, idx) => { return {key:'idx', label:(<div onClick={()=>{setFolderName(fname);console.log(RCDTImgList)}}>{fname}</div>)} })
+                }}> 
+                <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <Button >{'选择啥来着？你选了：' + folderName}<DownOutlined /></Button>
+                    </Space>
+                  </a>
+                </Dropdown>
             )}
           </Col>
           <Col span={12}>SearchBar</Col>
-          <Col span={24}>
-            {/* <ImgBar ImageList={RCDTImgList} /> */}
-          </Col>
+          <Col span={24}>{
+              RCDTImgList.length === 0 ? (<div></div>) : (
+              <ImgBar ImageList={RCDTImgList} />
+            )
+          }</Col>
 
           <Col span={24}>
             <h1>Spatial communication of celltypes</h1>
