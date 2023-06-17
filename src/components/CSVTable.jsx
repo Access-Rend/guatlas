@@ -40,13 +40,15 @@ export default function CSVTable(props) {
 
   const imgIndex = headers.findIndex((header) => header.title == "Image");
 
-  headers[imgIndex] = {
-    title: "Image",
-    key: "Image",
-    render: (text, record, _, action) => {
-      return <Image src={`/DB/${record.Image}`} />;
-    },
-  };
+  if (imgIndex > 0) {
+    headers[imgIndex] = {
+      title: "Image",
+      key: "Image",
+      render: (text, record, _, action) => {
+        return <Image src={`/DB/${record.Image}`} />;
+      },
+    };
+  }
 
   const dataFormat = records.map((record, index) => {
     record.key = index;
