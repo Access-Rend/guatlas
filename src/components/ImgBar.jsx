@@ -5,7 +5,7 @@ const ImgBar = ({ ImageList }) => {
     return (<div style={{height:'50vh', overflowX:'auto', overflowY:'auto'}}>
         {
             ImageList.map((i, idx) => (
-                <Image src={i} width={'100%'} />
+                <Image src={i} width={'100%'} fallback="/images/error.png"/>
             ))
         }
     </div>)

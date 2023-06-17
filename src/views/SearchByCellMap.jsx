@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { SelectData } from "./SelectData";
-import { Row, Col, Radio, Table, Divider, Button, Space, Image } from "antd";
+import { Row, Col, Radio, Divider, Button, Space, Image, Dropdown } from "antd";
 import { FullscreenOutlined } from "@ant-design/icons";
 import { useCSVFromURL } from "../csv2obj";
 import CSVTable from "../components/CSVTable";
+import { useDBFolder } from "../hooks/DBAPI";
 import { ImgBar } from "../components/ImgBar";
 
-const SelectBar = ({ value, onChange, selectList }) => {
+const SelectBar = ({ value, onChange, selectList, direction='' }) => {
   return (
     <Radio.Group
+      name={selectList[0]}
       onChange={onChange}
       value={value}
-      style={{ textAlign: "left" }}
+      buttonStyle='solid'
     >
-      {selectList.map((item, idx) => (
-        <Radio value={item} key={item}>
-          {item}
-        </Radio>
-      ))}
+      <Space direction={direction} align='start'>
+        {selectList.map((item, idx) => (
+          <Radio value={item} key={item}>
+            {item}
+          </Radio>
+        ))}
+      </Space>
     </Radio.Group>
   );
-};
+}
 
 const Detail = ({ tag, DatasetID }) => {
-    let [RCDTList, setRCDTList] = useState([])
+    let [RCDTFolderList, setRCDTFolderList] = useState([])
+    let [RCDTImgList, setRCDTImgList] = useState([])
+
+    let [folderName, setFolderName] = useState('')
+    let fl = useDBFolder('2.Cellmap/' + DatasetID + '/2.3.ST/2.3.1.RCTD')
+    let il = useDBFolder('2.Cellmap/' + DatasetID + '/2.3.ST/2.3.1.RCTD' + folderName)
+    
     useEffect(() => {
-      //todo
-      // 文件夹：'DB/2.Cellmap/' + DatasetID + '/2.3.ST/2.3.1.RCTD'
-      // 文件夹内全是图
-      // 点击下拉菜单，选择文件夹名
-      // 展示文件夹下所有图，搜索框搜索图片名称
-    })
+      setRCDTFolderList(fl)
+      setRCDTFolderList(il)
+    },[DatasetID])
 
     if(tag == '') return<></>
     if(tag == 'RNA') return(<div>
@@ -53,22 +60,16 @@ const Detail = ({ tag, DatasetID }) => {
               <h2>count</h2>
                 <Image
                 style={{ width: "80%" }}
-                src={
-                "/DB/2.Cellmap/" +
-                DatasetID +
-                "/2.2.scRNA/2.2.3.cellchat/count.png"
-                }
+                src={"/DB/2.Cellmap/" + DatasetID + "/2.2.scRNA/2.2.3.cellchat/count.png"}
+                fallback="/images/error.png"
                 />
             </Col>
             <Col span={12}>
             <h2>weight</h2>
                 <Image
                 style={{ width: "80%" }}
-                src={
-                "/DB/2.Cellmap/" +
-                DatasetID +
-                "/2.2.scRNA/2.2.3.cellchat/weight.png"
-                }
+                src={"/DB/2.Cellmap/" + DatasetID + "/2.2.scRNA/2.2.3.cellchat/weight.png"}
+                fallback="/images/error.png"
                 />
             </Col>
 
@@ -88,16 +89,37 @@ const Detail = ({ tag, DatasetID }) => {
     </div>)
     if(tag == 'Spatial') return(<div>
       <Row>
-            <Col span={12}>
+              <Col span={24}>
                 <h1>Spatial localization of celltypes</h1>
                 <br/>
-                <ImgBar ImageList={RCDTList}/>
+              </Col>
+              <Col span={12}>
+                { RCDTFolderList.length === 0 ? (<div></div>) : (<Dropdown menu={RCDTFolderList}/>) }
+              </Col>
+              <Col span={12}>SearchBar</Col>
+              <Col span={24}>
+                { RCDTImgList.length === 0 ? (<div>Empty Data</div>) : (<ImgBar ImageList={RCDTImgList}/>) }
             </Col>
 
+                
+            <Col span={24}><h1>Spatial communication of celltypes</h1></Col>
             <Col span={12}>
-                <h1>Spatial communication of celltypes</h1>
+              <Image 
+                style={{ width: "100%" }}
+                src={"/DB/2.Cellmap/" + DatasetID + "/2.3.ST/2.3.2.communication/cellProximityHeatmap.png"}
+                fallback="/images/error.png"
+              />
+            </Col>
+            <Col span={12}>
+              <Image 
+                style={{ width: "100%" }}
+                src={"/DB/2.Cellmap/" + DatasetID + "/2.3.ST/2.3.2.communication/spatPlot.png"}
+                fallback="/images/error.png"
+              />
+            </Col>
+            <Col span={24}>
                 <br/>
-                {/* <CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.2.scRNA/2.2.2.GSEA/GSEA_nogroup_20230601.csv'} /> */}
+                <CSVTable onClick={()=>{}} url={'/DB/2.Cellmap/' + DatasetID + '/2.3.ST/2.3.2.communication/comb_commdf.csv'} />
             </Col>
       </Row>
 
@@ -115,15 +137,16 @@ const SearchByCellMap = () => {
 
   const data = useCSVFromURL(
     "/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
-  );
+  )
 
-  console.log(data);
+  // console.log(data);
 
   const onChange_gen = (setter) => {
     return (e) => {
       setter(e.target.value);
-    };
-  };
+    }
+  }
+  
   const organOnchange = onChange_gen(setOrgan);
   const catOnChange = onChange_gen(setCat);
   const dataOnChange = onChange_gen(setDataType);
@@ -131,7 +154,7 @@ const SearchByCellMap = () => {
   const handleRecordClick = (record) => {
     setID(record.DatasetID)
     console.log(record.DatasetID)
-  };
+  }
 
   return (
     <div>
@@ -144,6 +167,7 @@ const SearchByCellMap = () => {
             value={organ}
             onChange={organOnchange}
             selectList={SelectData.organ_list}
+            direction='vertical'
           />
 
           <div style={styles.SelectTitle}>Category</div>
@@ -178,28 +202,28 @@ const SearchByCellMap = () => {
           <Image
             style={{ width: "100%" }}
             src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/00.finalumap.png"}
+            fallback="/images/error.png"
           />
         </Col>
         <Col span={8}>
           <Image
             style={{ width: "100%" }}
             src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png"}
+            fallback="/images/error.png"
           />
         </Col>
         <Col span={12}>
           <Image
             style={{ width: "100%" }}
-            src={
-              "/DB/2.Cellmap/" +
-              DatasetID +
-              "/2.1.Cellmap/05Celltype_dopplot.png"
-            }
+            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/05Celltype_dopplot.png"}
+            fallback="/images/error.png"
           />
         </Col>
         <Col span={12}>
           <Image
             style={{ width: "100%" }}
             src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"}
+            fallback="/images/error.png"
           />
         </Col>
       </Row>
@@ -223,8 +247,8 @@ const SearchByCellMap = () => {
 
         <Detail tag={detailTag} DatasetID={DatasetID} />
     </div>
-  );
-};
+  )
+}
 
 export default SearchByCellMap;
 
