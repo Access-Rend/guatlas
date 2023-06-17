@@ -13,6 +13,8 @@ export default function CSVTable(props) {
     setRecords(csv);
   }, [csv]);
 
+  if (records.length == 0) return <></>;
+
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
     return {
       title: key,
@@ -40,13 +42,15 @@ export default function CSVTable(props) {
 
   const imgIndex = headers.findIndex((header) => header.title == "Image");
 
-  headers[imgIndex] = {
-    title: "Image",
-    key: "Image",
-    render: (text, record, _, action) => {
-      return <Image src={`/DB/${record.Image}`} />;
-    },
-  };
+  if (imgIndex > 0) {
+    headers[imgIndex] = {
+      title: "Image",
+      key: "Image",
+      render: (text, record, _, action) => {
+        return <Image src={`/DB/${record.Image}`} />;
+      },
+    };
+  }
 
   const dataFormat = records.map((record, index) => {
     record.key = index;
@@ -76,6 +80,7 @@ export default function CSVTable(props) {
     dataSource: dataFormat,
     search: false,
     scroll: { x: "100%" },
+    pagination: { pageSize: 10 },
   };
 
   return (
