@@ -155,6 +155,8 @@ const SearchByCellMap = () => {
   )
 }
 
+export default SearchByCellMap
+
 const SelectBar = ({ value, onChange, selectList, direction = "" }) => {
   return (
     <Radio.Group
@@ -180,7 +182,8 @@ const Detail = ({ tag, DatasetID }) => {
   let [folderName, setFolderName] = useState('')
   
   let fl = useDBFolder("2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD")
-  let il = useDBFolder("2.Cellmap/" + fl[0] + "/2.3.ST/2.3.1.RCTD")
+  let il = useDBFolder("2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD/" + fl[0])
+
   useEffect(() =>{
     setRCDTFolderList(fl)
     setRCDTImgList(il)
@@ -306,9 +309,10 @@ const Detail = ({ tag, DatasetID }) => {
             )}
           </Col>
           <Col span={12}>SearchBar</Col>
+          <Divider/>
           <Col span={24}>{
               RCDTImgList.length === 0 ? (<div></div>) : (
-              <ImgBar ImageList={RCDTImgList} />
+              <ImgBar ImageList={RCDTImgList.map((img, idx) => {return "DB/2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD/" + folderName + '/' + img})} />
             )
           }</Col>
 
@@ -352,8 +356,6 @@ const Detail = ({ tag, DatasetID }) => {
       </div>
     )
 }
-
-export default SearchByCellMap
 
 const styles = {
   SelectTitle: {
