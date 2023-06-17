@@ -13,6 +13,8 @@ export default function CSVTable(props) {
     setRecords(csv);
   }, [csv]);
 
+  if (records.length == 0) return <></>;
+
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
     return {
       title: key,
