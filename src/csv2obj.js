@@ -8,8 +8,10 @@ const useCSVFromURL = (url) => {
   useEffect(() => {
     (async () => {
       const res = await fetch(url);
-      const csv = await res.text();
-      setData(readString(csv).data);
+      const text = await res.text();
+      const csv = readString(text);
+      if (csv.errors.length) return;
+      setData(csv.data);
     })();
   }, [url]);
 
