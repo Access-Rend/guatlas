@@ -2,10 +2,7 @@ import { Image, Space } from "antd"
 
 const ImgBar = ({ ImageList , direction=''}) => {
 
-    console.log(ImageList)
-    console.log("加拿大自爆兵")
-
-    if(ImageList.length > 0)
+    if(ImageList?.length > 0)
         return (<Space direction={direction} style={{height:'40vh', overflowX:'auto', overflowY:'auto'}}>
             {
                 ImageList.map((i, idx) => (

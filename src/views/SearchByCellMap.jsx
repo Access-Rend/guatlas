@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from "react"
-import { SelectData } from "./SelectData"
+import { SelectData } from '../components/SelectData'
 import { Row, Col, Radio, Divider, Button, Space, Image, Dropdown } from "antd"
 import { DownOutlined, FullscreenOutlined } from "@ant-design/icons"
 import { useCSVFromURL } from "../csv2obj"
 import CSVTable from "../components/CSVTable"
 import { useDBFolder } from "../hooks/DBAPI"
 import { ImgBar } from "../components/ImgBar"
+import { SelectBar } from '../components/SelectBar'
 
 const SearchByCellMap = () => {
   let [organ, setOrgan] = useState(SelectData.organ_list[0])
   let [cat, setCat] = useState(SelectData.category_list[0])
   let [dataType, setDataType] = useState(SelectData.datatype_list[0])
   let [DatasetID, setID] = useState("PMID34099557_R007")
-  let [detailTag, setDetailTag] = useState("")
-
-  const data = useCSVFromURL(
-    "/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
-  )
-
-  // console.log(data)
+  let [detailTag, setDetailTag] = useState('RNA')
 
   const onChange_gen = (setter) => {
     return (e) => {
@@ -39,37 +34,7 @@ const SearchByCellMap = () => {
     <div>
       <Row>
         <Col span={6}>
-          <img src="/icon/cell_map.png" style={{ width: "100%" }}></img>
-
-          <div style={styles.SelectTitle}>Organ</div>
-          <Row>
-            <SelectBar
-              value={organ}
-              onChange={organOnchange}
-              selectList={SelectData.organ_list}
-              direction="vertical"
-            />
-          </Row>
-
-          <div style={styles.SelectTitle}>Category</div>
-
-          <Row>
-            <SelectBar
-              value={cat}
-              onChange={catOnChange}
-              selectList={SelectData.category_list}
-            />
-          </Row>
-
-          <div style={styles.SelectTitle}>Data Type</div>
-          <Row>
-            <SelectBar
-              value={dataType}
-              onChange={dataOnChange}
-              filter={[organ,cat,dataType]}
-              selectList={SelectData.datatype_list}
-            />
-          </Row>
+          <SelectBar iconUrl={'/icon/cell_map.png'} organ={organ} cat={cat} dataType={dataType} setOrgan={setOrgan} setCat={setCat} setDataType={setDataType} />
         </Col>
 
         <Col span={18}>
@@ -78,7 +43,7 @@ const SearchByCellMap = () => {
             selected={DatasetID}
             filter={[organ,cat,dataType]}
             url="/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
-          />
+        />
         </Col>
       </Row>
       <Divider />
@@ -157,25 +122,6 @@ const SearchByCellMap = () => {
 
 export default SearchByCellMap
 
-const SelectBar = ({ value, onChange, selectList, direction = "" }) => {
-  return (
-    <Radio.Group
-      name={selectList[0]}
-      onChange={onChange}
-      value={value}
-      buttonStyle="solid"
-    >
-      <Space direction={direction} align="start">
-        {selectList.map((item, idx) => (
-          <Radio value={item} key={item}>
-            {item}
-          </Radio>
-        ))}
-      </Space>
-    </Radio.Group>
-  )
-}
-
 const Detail = ({ tag, DatasetID }) => {
   let [RCDTFolderList, setRCDTFolderList] = useState([])
   let [RCDTImgList, setRCDTImgList] = useState([])
@@ -211,11 +157,7 @@ const Detail = ({ tag, DatasetID }) => {
             <br />
             <CSVTable
               onClick={() => {}}
-              url={
-                "/DB/2.Cellmap/" +
-                DatasetID +
-                "/2.2.scRNA/2.2.2.GSEA/GSEA_nogroup_20230601.csv"
-              }
+              url={"/DB/2.Cellmap/" + DatasetID + "/2.2.scRNA/2.2.2.GSEA/GSEA_nogroup_20230601.csv"}
             />
           </Col>
         </Row>
@@ -355,12 +297,4 @@ const Detail = ({ tag, DatasetID }) => {
         </Row>
       </div>
     )
-}
-
-const styles = {
-  SelectTitle: {
-    fontSize: "25px",
-    textAlign: "left",
-    fontWeight: "500",
-  },
 }
