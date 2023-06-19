@@ -10,23 +10,28 @@ export default function CSVTable(props) {
   const { url, onClick, selected, filter = defaultFilter } = props;
   const csv = useCSVTableFormURL(url);
   const [records, setRecords] = useState([]);
-  const [search, setSearch] = useState("");
+  const [filterReg, setFilterReg] = useState("");
+
+  const handleFilter = (filterArray) => {
+    setFilterReg(
+      new RegExp(filterArray.map((s) => `(?=.*${s})`).join(""), "i")
+    );
+  };
 
   useEffect(() => {
-    const reg = new RegExp(
-      [...search.split(" "), ...filter].map((s) => `(?=.*${s})`).join(""),
-      "i"
-    );
+    handleFilter(filter);
+  }, [filter]);
+
+  useEffect(() => {
     const filteredData = csv.filter((record) => {
-      return JSON.stringify(record).match(reg);
+      return JSON.stringify(record).match(filterReg);
     });
     const trimData = filteredData.slice(
       0,
       filteredData.length > 100 ? 100 : filteredData.length
     );
-
     setRecords(trimData);
-  }, [csv, search, filter]);
+  }, [csv, filterReg]);
 
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
     return {
@@ -79,8 +84,8 @@ export default function CSVTable(props) {
     padding: "4px",
   };
 
-  const handleSearch = (e) => {
-    setSearch(e?.target.value);
+  const handleSearch = (str) => {
+    handleFilter([...str.split(" "), ...filter]);
   };
 
   const configs = {
@@ -93,14 +98,14 @@ export default function CSVTable(props) {
 
   return (
     <div style={tableStyle}>
-      <SearchInput value={search} onChange={handleSearch} />
+      <SearchInput onSearch={handleSearch} />
       <ProTable {...configs}></ProTable>
     </div>
   );
 }
 
 const SearchInput = (props) => {
-  const { value, onChange } = props;
+  const { onSearch } = props;
   const { Search } = Input;
   return (
     <Search
@@ -108,8 +113,7 @@ const SearchInput = (props) => {
       allowClear
       enterButton="Search"
       size="large"
-      value={value}
-      onChange={onChange}
+      onSearch={onSearch}
     />
   );
 };
