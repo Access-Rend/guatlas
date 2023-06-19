@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SelectData } from '../components/SelectData'
-
-import { FullscreenOutlined } from '@ant-design/icons'
+import { DownOutlined, FullscreenOutlined } from "@ant-design/icons";
 import { Button, Row, Col, Divider, Space, Input, Dropdown } from 'antd'
 import CSVTable from '../components/CSVTable'
 import { ImgBar } from '../components/ImgBar'
