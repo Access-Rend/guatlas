@@ -2,6 +2,26 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 
+// const csv = require("csv-parser");
+// const results = [];
+
+// const PocketBase = require("pocketbase/cjs");
+// const pb = new PocketBase("http://127.0.0.1:8090");
+
+// fs.createReadStream(
+//   "../public/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
+// )
+//   .pipe(csv())
+//   .on("data", (data) => results.push(data))
+//   .on("end", async () => {
+//     for (let i = 0; i < results.length; i++) {
+//       await pb
+//         .collection("03_all_sample_group_category_20230606")
+//         .create(results[i]);
+//     }
+//     console.log("Import done");
+//   });
+
 function listDirectory(path) {
   try {
     const files = fs.readdirSync(path);
