@@ -13,10 +13,6 @@ export default function CSVTable(props) {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    setRecords(csv);
-  }, [csv]);
-
-  useEffect(() => {
     const reg = new RegExp(
       [...search.split(" "), ...filter].map((s) => `(?=.*${s})`).join(""),
       "i"
