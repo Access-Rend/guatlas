@@ -10,6 +10,7 @@ const useCSVFromURL = (url) => {
       const res = await fetch(url);
       const text = await res.text();
       const csv = readString(text);
+      console.log("parse done", csv);
       if (csv.errors.length) return;
       setData(csv.data);
     })();
