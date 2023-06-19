@@ -20,7 +20,12 @@ export default function CSVTable(props) {
     const filteredData = csv.filter((record) => {
       return JSON.stringify(record).match(reg);
     });
-    setRecords(filteredData);
+    const trimData = filteredData.slice(
+      0,
+      filteredData.length > 100 ? 100 : filteredData.length
+    );
+
+    setRecords(trimData);
   }, [csv, search, filter]);
 
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
