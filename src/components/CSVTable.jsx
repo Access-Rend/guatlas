@@ -24,7 +24,6 @@ export default function CSVTable(props) {
     const filteredData = csv.filter((record) => {
       return JSON.stringify(record).match(reg);
     });
-    // console.log("max set", search, filter);
     setRecords(filteredData);
   }, [csv, search, filter]);
 
