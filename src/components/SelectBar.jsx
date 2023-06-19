@@ -20,22 +20,26 @@ const SelectUnit = ({ value, onChange, selectList, direction = "" }) => {
 }
 
 const SelectBar = (props) => {
-  let { iconUrl, organ, cat, dataType, setOrgan, setCat, setDataType } = props
+  let { organ, cat, dataType, setOrgan, setCat, setDataType } = props
     return (<div>
-        <img src={iconUrl} style={{ width: "100%" }}></img>
-
+        
+        {!organ ? <div></div> :
+        (<div>
         <div style={styles.SelectTitle}>Organ</div>
-        <Row>
-        <SelectUnit
-          value={organ}
-          onChange={(e)=>{setOrgan(e.target.value)}}
-          selectList={SelectData.organ_list}
-          direction="vertical"
-        />
-        </Row>
+          <Row>
+          <SelectUnit
+            value={organ}
+            onChange={(e)=>{setOrgan(e.target.value)}}
+            selectList={SelectData.organ_list}
+            direction="vertical"
+          />
+          </Row>
+        </div>)}
 
+        
+        {!cat ? <div></div> :
+        (<div>
         <div style={styles.SelectTitle}>Category</div>
-
         <Row>
         <SelectUnit
             value={cat}
@@ -43,7 +47,10 @@ const SelectBar = (props) => {
             selectList={SelectData.category_list}
         />
         </Row>
+        </div>)}
 
+        {!dataType ? <div></div> :
+        (<div> 
         <div style={styles.SelectTitle}>Data Type</div>
         <Row>
         <SelectUnit
@@ -52,6 +59,7 @@ const SelectBar = (props) => {
             selectList={SelectData.datatype_list}
         />
         </Row>
+        </div>)}
     </div>)
 }
 

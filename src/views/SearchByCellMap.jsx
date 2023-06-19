@@ -34,7 +34,8 @@ const SearchByCellMap = () => {
     <div>
       <Row>
         <Col span={6}>
-          <SelectBar iconUrl={'/icon/cell_map.png'} organ={organ} cat={cat} dataType={dataType} setOrgan={setOrgan} setCat={setCat} setDataType={setDataType} />
+          <img src='/icon/cell_map.png' style={{maxWidth:'100%'}}/>
+          <SelectBar organ={organ} cat={cat} dataType={dataType} setOrgan={setOrgan} setCat={setCat} setDataType={setDataType} />
         </Col>
 
         <Col span={18}>
@@ -133,7 +134,8 @@ const Detail = ({ tag, DatasetID }) => {
   useEffect(() =>{
     setRCDTFolderList(fl)
     setRCDTImgList(il)
-  },[fl])
+    setFolderName(fl[0])
+  },[folderName, fl])
 
   if (tag == "") return <></>
   if (tag == "RNA")
@@ -244,13 +246,13 @@ const Detail = ({ tag, DatasetID }) => {
                 }}> 
                 <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                      <Button >{'选择啥来着？你选了：' + folderName}<DownOutlined /></Button>
+                      <Button >{'选择啥来着？你选了：' + folderName}<DownOutlined/></Button>
                     </Space>
                   </a>
                 </Dropdown>
             )}
           </Col>
-          <Col span={12}>SearchBar</Col>
+          <Col span={12}>todo SearchBar</Col>
           <Divider/>
           <Col span={24}>{
               RCDTImgList.length === 0 ? (<div></div>) : (
