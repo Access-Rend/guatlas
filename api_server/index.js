@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
+const readdir = require("@jsdevtools/readdir-enhanced");
 
 // const csv = require("csv-parser");
 // const results = [];
@@ -22,9 +23,9 @@ const fs = require("fs");
 //     console.log("Import done");
 //   });
 
-function listDirectory(path) {
+function listDirectory(path, deep) {
   try {
-    const files = fs.readdirSync(path);
+    const files = readdir.readdirSync(path, { deep });
     return files.map((file) => {
       if (fs.statSync(`${path}/${file}`).isDirectory()) {
         return file + "/";
@@ -40,7 +41,8 @@ function listDirectory(path) {
 
 app.get("/api/db/*", (req, res) => {
   const path = `../public/db/${req.path.split("/").slice(3).join("/") + "/"}`;
-  res.json(listDirectory(path));
+  const deep = parseInt(req.query.deep);
+  res.json(listDirectory(path, deep));
 });
 
 app.listen(51730);
