@@ -135,7 +135,7 @@ const Detail = ({ tag, DatasetID }) => {
     setRCDTFolderList(fl)
     setRCDTImgList(il)
     setFolderName(fl[0])
-  },[folderName, fl])
+  }, [folderName, fl, il]);
 
   if (tag == "") return <></>
   if (tag == "RNA")
