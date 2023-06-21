@@ -242,7 +242,7 @@ const Detail = ({ tag, DatasetID }) => {
           </Col>
           <Col span={12}>
             {RCDTFolderList.length === 0 ? (<div></div>) : (
-                <Dropdown menu={{ items: RCDTFolderList.map((fname, idx) => { return {key:'idx', label:(<div onClick={()=>{setFolderName(fname);console.log(RCDTImgList)}}>{fname}</div>)} })
+                <Dropdown menu={{ items: RCDTFolderList.map((fname, idx) => { return {key:idx, label:(<div onClick={()=>{setFolderName(fname)}}>{fname}</div>)} })
                 }}> 
                 <a onClick={(e) => e.preventDefault()}>
                     <Space>

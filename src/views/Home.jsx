@@ -4,38 +4,7 @@ import Human from '../components/Human'
 
 const Home = () => {
     return (<div>
-        <Row>
-            <Col span={24}>
-                <h1 style={{fontSize:'60px'}}>GUatlas</h1>
-                <div style={{fontSize:'35px'}}>A database of single cell and spatial transcriptome for the entire lifespan of human genitourinary system.</div>
-            </Col>
-        </Row>
-        <Divider />
-        <Divider />
-       
-        <Row>
-            <Col span={24}>
-                <h1 style={{fontSize:'30px', textAlign:'left'}}>&emsp;&emsp;&emsp;Include :</h1>
-                <hr />
-            </Col>
-            
-            <Col span={2}></Col>
-            <Col span={6}>
-                <h2>1.Single-cell and spatial transcriptome cell atlas</h2>
-                <div style={styles.LeftText}>&emsp;Annotation,  Proportion,  DEGs,  GSEA,Cell-cell communication,TF regulatory network, Spatial location, Spatial interactions of celltypes </div>
-            </Col>
-            <Col span={1}></Col>
-            <Col span={6}>
-                <h2>2.DEGs(Differentially expressed genes) across different life states </h2>
-                <div style={styles.LeftText}>&emsp;DEGs, GSEA, Cell-cell communication, TF regulatory network,Spatial expression,  Spatially co-expressed genes</div>
-            </Col>
-            <Col span={1}></Col>
-            <Col span={6}>
-                <h2>3. Microenvironment similarity</h2>
-                <div style={styles.LeftText}>&emsp;T lymphoid cells,B lymphoid cells,Myeloid cells,Fibroblasts,Endothelial cells</div>
-            </Col>
-            <Col span={2}></Col>
-        </Row>
+        <img src='/images/home.svg' />
 
         <Row>
             <Col span={24}>

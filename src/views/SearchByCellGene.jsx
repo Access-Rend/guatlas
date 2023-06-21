@@ -5,7 +5,7 @@ import { Button, Row, Col, Divider, Space, Input, Dropdown } from 'antd'
 import CSVTable from '../components/CSVTable'
 import { ImgBar } from '../components/ImgBar'
 import { SelectBar } from '../components/SelectBar'
-import { useDBFolder } from "../hooks/DBAPI"
+import { useDBFolder, tree } from "../hooks/DBAPI"
 
 const SearchByCellGene = () => {
     
@@ -63,19 +63,47 @@ const Detail = (props) => {
   let [organ, setOrgan] = useState(SelectData.organ_list[0])
   let [cat, setCat] = useState(SelectData.category_list[0])
 
-  let [SFPFolderList, setSFPFolderList] = useState([])
-  let [SFPImgList, setSFPImgList] = useState([])
-  let [folderName, setFolderName] = useState('')
+  let [FolderTree, setFolderTree] = useState([])
+  let [ImgList, setImgList] = useState([])
+  let [ImgFolder, setImgFolder] = useState('')
   
-  let fl = useDBFolder("/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot")
+// let a = res.map((f, fidx) => {
+      //   // f = {a:[1,2,3]}
+      //   let fn = Object.keys(f)[0]
+      //   let res = {
+      //     key: fn,
+      //     lable: fn,
+      //   }
 
+      //   if(Object.values(f)[0].length > 0){
+      //     res['children'] = Object.values(f)[0].map((ff, ffidx) => {
+      //       return {
+      //         key: fn + ff,
+      //         lable: (<div onClick={setFolderName(`DB/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)}>ff</div>),
+      //       }
+      //     })
+      //   }
+
+      //   return res
+      // })
 
   useEffect(() =>{
-    setSFPFolderList(fl)
-    setFolderName(fl[0])
-    console.log(fl)
-    console.log('s')
-  },[folderName, fl])
+    let res = '';
+    (async () => {
+      res = await tree('/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/',2)
+      setFolderTree(res)
+      console.log(a)
+    })();
+  },[])
+
+  useEffect(() =>{
+    (async () => {
+      let res = await tree(ImgFolder,1)
+      setImgList(res)
+    })();
+  },[ImgFolder])
+
+  
 
   const { tag, GeneSymbol } = props
   let [filter, setFilter] = useState([organ, cat])
@@ -145,12 +173,30 @@ const Detail = (props) => {
       <Row>
           <h1>Spatial expression</h1>
           <Col span={24}>
-            {SFPFolderList.length === 0 ? (<div></div>) : (
-                <Dropdown menu={{ items: SFPFolderList.map((fname, idx) => { return {key:'idx', label:(<div onClick={()=>{setFolderName(fname);console.log(SFPFolderList)}}>{fname}</div>)} })
-                }}> 
+            {FolderTree.length === 0 ? (<div></div>) : (
+                <Dropdown menu={{ items: FolderTree.map((f, fidx) => {
+                  // f = {a:[1,2,3]}
+                  let fn = Object.keys(f)[0]
+                  let res = {
+                    key: fn,
+                    lable: fn,
+                  }
+          
+                  if(Object.values(f)[0].length > 0){
+                    res['children'] = Object.values(f)[0].map((ff, ffidx) => {
+                      return {
+                        key: fn + ff,
+                        lable: (<div onClick={setImgFolder(`DB/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)}>ff</div>),
+                      }
+                    })
+                  }
+          
+                  return res
+                })}}>
+                  
                 <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                      <Button >{'选择啥来着？你选了：' + folderName}<DownOutlined /></Button>
+                      <Button >{'选择啥来着？你选了：' + ImgFolder}<DownOutlined /></Button>
                     </Space>
                   </a>
                 </Dropdown>
@@ -159,9 +205,9 @@ const Detail = (props) => {
           <Col span={12}>todo SearchBar</Col>
           <Divider/>
           <Col span={24}>{
-            //   SFPImgList.length === 0 ? (<div></div>) : (
-            //   <ImgBar ImageList={SFPImgList.map((img, idx) => {return "/DB/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot" + folderName + '/' + img})} />
-            // )
+              ImgList.length === 0 ? (<div></div>) : (
+              <ImgBar ImageList={ImgList.map((img, idx) => {return ImgFolder + '/' + img})} />
+            )
           }</Col>
       </Row>
 

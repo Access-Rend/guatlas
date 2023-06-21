@@ -1,5 +1,5 @@
-import { HomeOutlined, SearchOutlined, LinkOutlined } from '@ant-design/icons';
-import Logo from '/logo/guatlas.png'
+import { HomeOutlined, SearchOutlined, ProfileOutlined, DownloadOutlined, QuestionOutlined, TeamOutlined } from '@ant-design/icons';
+import Logo from '/logo/guatlas.svg'
 import { Menu } from 'antd';
 import { useState } from 'react';
 const items = [
@@ -28,9 +28,23 @@ const items = [
     ],
   },
   {
-    label: (<a href='/Links'>Links</a>),
-    key: 'Links',
-    icon: <LinkOutlined />,
+    label: (<a href='/Publication'>Publication</a>),
+    key: 'Publication',
+    icon: <ProfileOutlined />,
+  },{
+    label: (<a href='/Download'>Download</a>),
+    key: 'Download',
+    icon: <DownloadOutlined />,
+  },
+  {
+    label: (<a href='/Help'>Help</a>),
+    key: 'Help',
+    icon: <QuestionOutlined />,
+  },
+  {
+    label: (<a href='/About'>About</a>),
+    key: 'About',
+    icon: <TeamOutlined />,
   },
   
 ]
