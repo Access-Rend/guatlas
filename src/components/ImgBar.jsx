@@ -6,7 +6,7 @@ const ImgBar = ({ ImageList , direction=''}) => {
         return (<Space direction={direction} style={{height:'40vh', overflowX:'auto', overflowY:'auto'}}>
             {
                 ImageList.map((i, idx) => (
-                    <Image src={i} width={'100%'} fallback="/images/error.png"/>
+                    <Image src={i} width={'100%'} fallback="/images/error.png" key={idx}/>
                 ))
             }
         </Space>)

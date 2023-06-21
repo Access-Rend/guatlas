@@ -3,32 +3,15 @@ const app = express();
 const fs = require("fs");
 const readdir = require("@jsdevtools/readdir-enhanced");
 const { dir } = require("console");
+const { type } = require("os");
 const db_path = '../public/db/'
-// const csv = require("csv-parser");
-// const results = [];
-
-// const PocketBase = require("pocketbase/cjs");
-// const pb = new PocketBase("http://127.0.0.1:8090");
-
-// fs.createReadStream(
-//   "../public/DB/1.Cellmap-search/03.all-sample-group-category-20230606.csv"
-// )
-//   .pipe(csv())
-//   .on("data", (data) => results.push(data))
-//   .on("end", async () => {
-//     for (let i = 0; i < results.length; i++) {
-//       await pb
-//         .collection("03_all_sample_group_category_20230606")
-//         .create(results[i]);
-//     }
-//     console.log("Import done");
-//   });
 
 
 const tree_dir = (path = '', depth = 1) => {
   let dir_list = fs.readdirSync(path)
-  if(depth <= 1)
+  if(depth <= 1){
     return dir_list
+  }
 
   dir_list = dir_list.map((name, idx) => {
     if(fs.statSync(path + '/' + name).isDirectory())
@@ -40,29 +23,15 @@ const tree_dir = (path = '', depth = 1) => {
   return {[path.split('/').filter(Boolean).pop()] : dir_list}
 }
 
-function listDirectory(path, deep) {
-  try {
-    const files = readdir.readdirSync(path, { deep });
-    return files.map((file) => {
-      if (fs.statSync(`${path}/${file}`).isDirectory()) {
-        return file + "/";
-      } else {
-        return file;
-      }
-    });
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-}
-
 app.get("/api/tree/", (req,res) => {
 
   let r = tree_dir(db_path + req.query['path'], req.query['depth'])
-  r = r[Object.keys(r)[0]]
-  r = Object.keys(r).map((key)=>{
-    return {[Object.keys(r[key])] : r[key][Object.keys(r[key])]}
-  })
+  if(req.query['depth'] > 1) {
+    r = r[Object.keys(r)[0]]
+    r = Object.keys(r).map((key)=>{
+      return {[Object.keys(r[key])] : r[key][Object.keys(r[key])]}
+    })
+  }
   res.json(r)
 })
 

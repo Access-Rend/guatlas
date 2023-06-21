@@ -14,9 +14,8 @@ const SearchByCellGene = () => {
   
     return (
       <div>
-        <Space>
           <Row>
-            <Col span={8}><img src='/icon/gene.png'/></Col>
+            <Col span={6}><img src='/icon/gene.png' style={{maxWidth:'100%'}}/></Col>
             <Col span={16}>
               <Input.Search
                 placeholder="input a Gene Symbol"
@@ -48,7 +47,6 @@ const SearchByCellGene = () => {
             </Col>
               
           </Row>
-        </Space>
         <br />
         <hr />
   
@@ -64,35 +62,15 @@ const Detail = (props) => {
   let [cat, setCat] = useState(SelectData.category_list[0])
 
   let [FolderTree, setFolderTree] = useState([])
+  let [selected, setSelected] = useState('')
   let [ImgList, setImgList] = useState([])
   let [ImgFolder, setImgFolder] = useState('')
-  
-// let a = res.map((f, fidx) => {
-      //   // f = {a:[1,2,3]}
-      //   let fn = Object.keys(f)[0]
-      //   let res = {
-      //     key: fn,
-      //     lable: fn,
-      //   }
-
-      //   if(Object.values(f)[0].length > 0){
-      //     res['children'] = Object.values(f)[0].map((ff, ffidx) => {
-      //       return {
-      //         key: fn + ff,
-      //         lable: (<div onClick={setFolderName(`DB/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)}>ff</div>),
-      //       }
-      //     })
-      //   }
-
-      //   return res
-      // })
 
   useEffect(() =>{
     let res = '';
     (async () => {
       res = await tree('/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/',2)
       setFolderTree(res)
-      console.log(res)
     })();
   },[])
 
@@ -101,7 +79,7 @@ const Detail = (props) => {
       let res = await tree(ImgFolder,1)
       setImgList(res)
     })();
-  },[ImgFolder])
+  },[selected, ImgFolder])
 
   
 
@@ -179,14 +157,18 @@ const Detail = (props) => {
                   let fn = Object.keys(f)[0]
                   let res = {
                     key: fn,
-                    lable: fn,
+                    label: fn,
                   }
           
                   if(Object.values(f)[0].length > 0){
                     res['children'] = Object.values(f)[0].map((ff, ffidx) => {
                       return {
-                        key: fn + ff,
-                        lable: (<div onClick={()=> setImgFolder(`DB/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)}>ff</div>),
+                        key: fn + ffidx,
+                        label: (<div onClick={()=> {
+                          setImgFolder(`/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)
+                          setSelected(ff)
+                          console.log(ImgFolder)
+                        }}>{ff}</div>),
                       }
                     })
                   }
@@ -196,7 +178,7 @@ const Detail = (props) => {
                   
                 <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                      <Button >{'选择啥来着？你选了：' + ImgFolder}<DownOutlined /></Button>
+                      <Button >{'选择啥来着'+selected}<DownOutlined /></Button>
                     </Space>
                   </a>
                 </Dropdown>
@@ -206,7 +188,7 @@ const Detail = (props) => {
           <Divider/>
           <Col span={24}>{
               ImgList.length === 0 ? (<div></div>) : (
-              <ImgBar ImageList={ImgList.map((img, idx) => {return ImgFolder + '/' + img})} />
+              <ImgBar ImageList={ImgList.map((img, idx) => {return 'DB' + ImgFolder + '/' + img})} />
             )
           }</Col>
       </Row>
