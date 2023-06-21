@@ -186,7 +186,7 @@ const Detail = (props) => {
                     res['children'] = Object.values(f)[0].map((ff, ffidx) => {
                       return {
                         key: fn + ff,
-                        lable: (<div onClick={setImgFolder(`DB/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)}>ff</div>),
+                        lable: (<div onClick={()=> setImgFolder(`DB/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)}>ff</div>),
                       }
                     })
                   }
