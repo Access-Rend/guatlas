@@ -92,7 +92,7 @@ const Detail = (props) => {
     (async () => {
       res = await tree('/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/',2)
       setFolderTree(res)
-      console.log(a)
+      console.log(res)
     })();
   },[])
 
