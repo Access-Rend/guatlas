@@ -5,9 +5,16 @@ import { useEffect, useState } from "react";
 import { Image, Input } from "antd";
 
 const defaultFilter = [];
+const defaultRender = {};
 
 export default function CSVTable(props) {
-  const { url, onClick, selected, filter = defaultFilter } = props;
+  const {
+    url,
+    onClick,
+    selected,
+    filter = defaultFilter,
+    render = defaultRender,
+  } = props;
   const csv = useCSVTableFormURL(url);
   const [records, setRecords] = useState([]);
   const [filterReg, setFilterReg] = useState("");
@@ -71,6 +78,16 @@ export default function CSVTable(props) {
       },
     };
   }
+
+  Object.entries(render).forEach(([recordHeader, recordRender]) => {
+    const index = headersFormat.findIndex(
+      (header) => header.title == recordHeader
+    );
+    if (index > 0) {
+      headersFormat[index].render = (text, record, _, action) =>
+        recordRender(record);
+    }
+  });
 
   const dataFormat = records.map((record, index) => {
     record.key = index;
