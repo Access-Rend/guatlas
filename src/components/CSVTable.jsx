@@ -45,6 +45,7 @@ export default function CSVTable(props) {
       title: key,
       dataIndex: key,
       key: key,
+      ellipsis: true,
     };
   });
 
