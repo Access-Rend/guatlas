@@ -74,7 +74,7 @@ export default function CSVTable(props) {
       title: "Image",
       key: "Image",
       render: (text, record, _, action) => {
-        return <Image src={`/DB/${record.Image}`} />;
+        return <Image style={{ width: "50px" }} src={`/DB/${record.Image}`} />;
       },
     };
   }
