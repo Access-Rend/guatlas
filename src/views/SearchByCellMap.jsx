@@ -52,35 +52,10 @@ const SearchByCellMap = () => {
       <br />
 
       <Row>
-        <Col span={16}>
+        <Col span={24}>
           <Image
             style={{ width: "100%" }}
             src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/00.finalumap.png"}
-            fallback="/images/error.png"
-          />
-        </Col>
-        <Col span={8}>
-          <Image
-            style={{ width: "100%" }}
-            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png"}
-            fallback="/images/error.png"
-          />
-        </Col>
-        <Col span={12}>
-          <Image
-            style={{ width: "100%" }}
-            src={
-              "/DB/2.Cellmap/" +
-              DatasetID +
-              "/2.1.Cellmap/05Celltype_dopplot.png"
-            }
-            fallback="/images/error.png"
-          />
-        </Col>
-        <Col span={12}>
-          <Image
-            style={{ width: "100%" }}
-            src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"}
             fallback="/images/error.png"
           />
         </Col>
@@ -142,6 +117,9 @@ const Detail = ({ tag, DatasetID }) => {
     return (
       <div>
         <Row>
+          <Col span={24}>
+            <ImgBar ImageList={["/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png", "/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/05Celltype_dopplot.png", "/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"]}/>
+          </Col>
           <Col span={12}>
             <h1>DEG</h1>
             <br />

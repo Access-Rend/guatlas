@@ -10,7 +10,7 @@ const SelectUnit = ({ value, onChange, selectList, direction = "" }) => {
       >
         <Space direction={direction} align="start">
           {selectList.map((item, idx) => (
-            <Radio value={item} key={item}>
+            <Radio style={{fontSize: '18px'}} value={item} key={item}>
               {item}
             </Radio>
           ))}
@@ -45,6 +45,7 @@ const SelectBar = (props) => {
             value={cat}
             onChange={(e)=>{setCat(e.target.value)}}
             selectList={SelectData.category_list}
+            direction="vertical"
         />
         </Row>
         </div>)}
@@ -57,6 +58,7 @@ const SelectBar = (props) => {
             value={dataType}
             onChange={(e)=>{setDataType(e.target.value)}}
             selectList={SelectData.datatype_list}
+            direction="vertical"
         />
         </Row>
         </div>)}

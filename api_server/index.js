@@ -56,6 +56,7 @@ app.get("/api/tree/", (req, res) => {
     return { [Object.keys(r[key])]: r[key][Object.keys(r[key])] };
   });
   res.json(r);
+  console.log(r)
 });
 
 app.get("/api/db/*", (req, res) => {
@@ -64,6 +65,6 @@ app.get("/api/db/*", (req, res) => {
   res.json(listDirectory(path, deep));
 });
 
-app.listen(8890, () => {
+app.listen(8090, () => {
   console.log("Server start at 8090");
 });

@@ -9,7 +9,7 @@ const items = [
     icon: <HomeOutlined />,
   },
   {
-    label: (<a>Search</a>),
+    label: (<a style={{color:'inherit'}}>Search</a>),
     key: 'Search',
     icon: <SearchOutlined />,
     children: [
@@ -56,7 +56,7 @@ const TopBar = () => {
   };
   return (
     <div style={styles.TopBar}>
-        <img src={Logo} width='100px' height='auto' ></img>
+        <img src={Logo} height='120vh'></img>
         <Menu style={styles.Menu} onClick={onClick}  mode="horizontal" items={items} inlineIndent={100}/>
     </div>
   );
@@ -70,8 +70,9 @@ const styles = {
         flexDirection: 'row',
     },
     Menu:{
-        width: '100%',
-        height: '70%',
-        fontSize: '20px',
+        width: '100vw',
+        height: '10vh',
+        fontSize: '30px',
+        justifyContent: 'flex-end',
     }
 }
