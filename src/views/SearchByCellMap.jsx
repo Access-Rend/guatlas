@@ -158,6 +158,7 @@ const Detail = ({ tag, DatasetID }) => {
               DatasetID +
               "/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv"
             }
+            filterCols= {["Celltype"]}
           />
         </Row>
         <Row style={{display: 'flex', placeContent: 'center'}}>

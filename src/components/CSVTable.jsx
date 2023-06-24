@@ -6,6 +6,7 @@ import { Image, Input } from "antd";
 
 const defaultFilter = [];
 const defaultRender = {};
+const defaultFilterCols = [];
 
 export default function CSVTable(props) {
   const {
@@ -14,6 +15,7 @@ export default function CSVTable(props) {
     selected,
     filter = defaultFilter,
     render = defaultRender,
+    filterCols = defaultFilterCols,
   } = props;
   const csv = useCSVTableFormURL(url);
   const [records, setRecords] = useState([]);
@@ -37,7 +39,7 @@ export default function CSVTable(props) {
       0,
       filteredData.length > 100 ? 100 : filteredData.length
     );
-    setRecords(trimData);
+    setRecords(filteredData);
   }, [csv, filterReg]);
 
   const recordHeaders = Object.keys(records[0] ?? []).map((key) => {
@@ -45,7 +47,6 @@ export default function CSVTable(props) {
       title: key,
       dataIndex: key,
       key: key,
-      ellipsis: true,
     };
   });
 
@@ -80,20 +81,45 @@ export default function CSVTable(props) {
     };
   }
 
-  Object.entries(render).forEach(([recordHeader, recordRender]) => {
-    const index = headersFormat.findIndex(
-      (header) => header.title == recordHeader
-    );
-    if (index > 0) {
-      headersFormat[index].render = (text, record, _, action) =>
-        recordRender(record);
-    }
-  });
-
   const dataFormat = records.map((record, index) => {
     record.key = index;
     return record;
   });
+
+  const alterRenderFunction = () => {
+    Object.entries(render).forEach(([recordHeader, recordRender]) => {
+      const index = headersFormat.findIndex(
+        (header) => header.title == recordHeader
+      );
+      if (index > 0) {
+        headersFormat[index].render = (text, record, _, action) =>
+          recordRender(record);
+      }
+    });
+  };
+  alterRenderFunction();
+
+  const alterFilterCol = () => {
+    filterCols.forEach((filterHeader) => {
+      const index = headersFormat.findIndex(
+        (header) => header.title == filterHeader
+      );
+      if (index > 0) {
+        const uniqueSet = [
+          ...new Set(csv.map((data) => data[filterHeader])),
+        ].filter((uni) => uni != undefined);
+        const uniqueEnum = {};
+        uniqueSet.forEach((s) => (uniqueEnum[s] = { text: s }));
+        headersFormat[index] = {
+          ...headersFormat[index],
+          filters: true,
+          onFilter: true,
+          valueEnum: uniqueEnum,
+        };
+      }
+    });
+  };
+  alterFilterCol();
 
   const tableStyle = {
     display: "flex",
