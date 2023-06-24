@@ -6,6 +6,7 @@ import CSVTable from '../components/CSVTable'
 import { ImgBar } from '../components/ImgBar'
 import { SelectBar } from '../components/SelectBar'
 import { useDBFolder, tree } from "../hooks/DBAPI"
+import ButtonDescription from "../components/ButtonDescription";
 
 const SearchByCellGene = () => {
     
@@ -35,6 +36,9 @@ const SearchByCellGene = () => {
               >
                 Singile cell RNA result
               </Button>
+            <ButtonDescription>
+              社交媒体的兴起给人们带来了更多的连接和交流机会，然而，它也引发了一系列与孤独有关的问题。在这个数字化时代，许多人发现自己陷入了一种与他人隔离的状态。这篇文章将探讨社交媒体对孤独的影响，并提出一些应对的建议。
+            </ButtonDescription>
             </Col>
 
             <Col span={12}>
@@ -44,6 +48,9 @@ const SearchByCellGene = () => {
               >
                 Spatial Transcriptomic result
               </Button>
+            <ButtonDescription>
+              社交媒体的兴起给人们带来了更多的连接和交流机会，然而，它也引发了一系列与孤独有关的问题。在这个数字化时代，许多人发现自己陷入了一种与他人隔离的状态。这篇文章将探讨社交媒体对孤独的影响，并提出一些应对的建议。
+            </ButtonDescription>
             </Col>
               
           </Row>
