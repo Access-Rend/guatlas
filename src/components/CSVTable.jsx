@@ -99,6 +99,7 @@ export default function CSVTable(props) {
     flexDirection: "column",
     gap: "10px",
     padding: "4px",
+    width: "100%",
   };
 
   const handleSearch = (str) => {

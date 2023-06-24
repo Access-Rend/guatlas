@@ -148,27 +148,25 @@ const Detail = ({ tag, DatasetID }) => {
   if (tag == "RNA")
     return (
       <div>
-        <Row>
-          <Col span={12}>
-            <h1>DEG</h1>
-            <br />
-            <CSVTable
-              onClick={() => {}}
-              url={
-                "/DB/2.Cellmap/" +
-                DatasetID +
-                "/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv"
-              }
-            />
-          </Col>
-          <Col span={12}>
-            <h1>GSEA</h1>
-            <br />
-            <CSVTable
-              onClick={() => {}}
-              url={"/DB/2.Cellmap/" + DatasetID + "/2.2.scRNA/2.2.2.GSEA/GSEA_nogroup_20230601.csv"}
-            />
-          </Col>
+        <Row style={{display: 'flex', placeContent: 'center'}}>
+          <h1>DEG</h1>
+          <br />
+          <CSVTable
+            onClick={() => {}}
+            url={
+              "/DB/2.Cellmap/" +
+              DatasetID +
+              "/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv"
+            }
+          />
+        </Row>
+        <Row style={{display: 'flex', placeContent: 'center'}}>
+          <h1>GSEA</h1>
+          <br />
+          <CSVTable
+            onClick={() => {}}
+            url={"/DB/2.Cellmap/" + DatasetID + "/2.2.scRNA/2.2.2.GSEA/GSEA_nogroup_20230601.csv"}
+          />
         </Row>
 
         <Row>
