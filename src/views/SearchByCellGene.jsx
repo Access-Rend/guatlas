@@ -114,7 +114,7 @@ const Detail = (props) => {
             <CSVTable
               onClick={() => {}}
               url={'/DB/3.Gene/3.1.scRNA/3.1.2.DEG/outputfinal.csv'}
-              // filter={filter}
+              filter={filter}
             />
           </Col>
       </Row>
@@ -125,7 +125,7 @@ const Detail = (props) => {
           <CSVTable
             onClick={() => {}}
             url={'/DB/3.Gene/3.1.scRNA/3.1.2.GSEA/GSEA_output.csv'}
-            // filter={filter}
+            filter={filter}
           />
           </Col>
       </Row>
@@ -136,7 +136,7 @@ const Detail = (props) => {
             <CSVTable
               onClick={() => {}}
               url={'/DB/3.Gene/3.1.scRNA/3.1.3.cellchat/cellchat_dfall.csv'}
-              // filter={filter}
+              filter={filter}
             />
           </Col>
       </Row>
@@ -147,7 +147,7 @@ const Detail = (props) => {
             <CSVTable
                 onClick={() => {}}
                 url={"/DB/3.Gene/3.1.scRNA/3.1.4.pyscenic/Regulon_specific_score.csv"}
-                // filter={filter}
+                filter={filter}
               />
           </Col>
       </Row>
