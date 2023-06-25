@@ -5,7 +5,7 @@ import { Button, Row, Col, Divider, Space, Input, Dropdown } from 'antd'
 import CSVTable from '../components/CSVTable'
 import { ImgBar } from '../components/ImgBar'
 import { SelectBar } from '../components/SelectBar'
-import { useDBFolder, tree } from "../hooks/DBAPI"
+import { tree } from "../hooks/DBAPI"
 import ButtonDescription from "../components/ButtonDescription";
 
 const SearchByCellGene = () => {
@@ -111,7 +111,6 @@ const Detail = (props) => {
       <Row>
           <Col span={24}>
             <h1>DEG</h1>
-            <ImgBar />
             <CSVTable
               onClick={() => {}}
               url={'/DB/3.Gene/3.1.scRNA/3.1.2.DEG/outputfinal.csv'}
@@ -121,8 +120,8 @@ const Detail = (props) => {
       </Row>
 
       <Row>
-          <h1>GSEA</h1>
           <Col span={24}>
+          <h1>GSEA</h1>
           <CSVTable
             onClick={() => {}}
             url={'/DB/3.Gene/3.1.scRNA/3.1.2.GSEA/GSEA_output.csv'}
@@ -132,8 +131,8 @@ const Detail = (props) => {
       </Row>
 
       <Row>
-          <h1>Cell communication</h1>
           <Col span={24}>
+          <h1>Cell communication</h1>
             <CSVTable
               onClick={() => {}}
               url={'/DB/3.Gene/3.1.scRNA/3.1.3.cellchat/cellchat_dfall.csv'}
@@ -143,8 +142,8 @@ const Detail = (props) => {
       </Row>
 
       <Row>
-          <h1>TF regulatory network</h1>
           <Col span={24}>
+          <h1>TF regulatory network</h1>
             <CSVTable
                 onClick={() => {}}
                 url={"/DB/3.Gene/3.1.scRNA/3.1.4.pyscenic/Regulon_specific_score.csv"}

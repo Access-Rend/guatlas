@@ -56,7 +56,6 @@ app.get("/api/tree/", (req, res) => {
     return { [Object.keys(r[key])]: r[key][Object.keys(r[key])] };
   });
   res.json(r);
-  console.log(r)
 });
 
 app.get("/api/db/*", (req, res) => {

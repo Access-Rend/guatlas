@@ -4,7 +4,7 @@ import { Row, Col, Radio, Divider, Button, Space, Image, Dropdown } from "antd"
 import { DownOutlined, FullscreenOutlined } from "@ant-design/icons"
 import { useCSVFromURL } from "../csv2obj"
 import CSVTable from "../components/CSVTable"
-import { useDBFolder } from "../hooks/DBAPI"
+import { tree } from "../hooks/DBAPI"
 import { ImgBar } from "../components/ImgBar"
 import { SelectBar } from '../components/SelectBar'
 import ButtonDescription from "../components/ButtonDescription";
@@ -13,7 +13,7 @@ const SearchByCellMap = () => {
   let [organ, setOrgan] = useState(SelectData.organ_list[0])
   let [cat, setCat] = useState(SelectData.category_list[0])
   let [dataType, setDataType] = useState(SelectData.datatype_list[0])
-  let [DatasetID, setID] = useState("PMID34099557_R007")
+  let [DatasetID, setID] = useState("PMID34099557_R007") // 调试用默认值，正式使用换成空字符串
   let [detailTag, setDetailTag] = useState('RNA')
 
   const onChange_gen = (setter) => {
@@ -28,7 +28,6 @@ const SearchByCellMap = () => {
 
   const handleRecordClick = (record) => {
     setID(record.DatasetID)
-    console.log(record.DatasetID)
   }
 
   return (
@@ -55,7 +54,7 @@ const SearchByCellMap = () => {
       <Row>
         <Col span={24}>
           <Image
-            style={{ width: "100%" }}
+            style={{ width: "60vw" }}
             src={"/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/00.finalumap.png"}
             fallback="/images/error.png"
           />
@@ -95,8 +94,10 @@ const SearchByCellMap = () => {
           </ButtonDescription>
         </Col>
       </Row>
-      <br />
       <hr />
+      <br />
+      <br />
+      <br />
 
       <Detail tag={detailTag} DatasetID={DatasetID} />
     </div>
@@ -106,18 +107,19 @@ const SearchByCellMap = () => {
 export default SearchByCellMap
 
 const Detail = ({ tag, DatasetID }) => {
-  let [RCDTFolderList, setRCDTFolderList] = useState([])
-  let [RCDTImgList, setRCDTImgList] = useState([])
-  let [folderName, setFolderName] = useState('')
+  let [FolderList, setFolderList] = useState([])
+  let [ImgList, setImgList] = useState([])
+  let [selected, setSelected] = useState('')
+  let [FolderTree, setFolderTree] = useState([])
   
-  let fl = useDBFolder("2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD")
-  let il = useDBFolder("2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD/" + fl[0])
-
   useEffect(() =>{
-    setRCDTFolderList(fl)
-    setRCDTImgList(il)
-    setFolderName(fl[0])
-  }, [folderName, fl, il]);
+    let res = '';
+    (async () => {
+      res = await tree("/2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD",2)
+      setFolderTree(res)
+      console.log("FolderTree",res)
+    })();
+  },[])
 
   if (tag == "") return <></>
   if (tag == "RNA")
@@ -127,7 +129,7 @@ const Detail = ({ tag, DatasetID }) => {
           <Col span={24}>
             <ImgBar ImageList={["/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png", "/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/05Celltype_dopplot.png", "/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"]}/>
           </Col>
-          <Col span={12}>
+          <Col span={24}>
             <h1>DEG</h1>
             <br />
             <CSVTable
@@ -139,7 +141,7 @@ const Detail = ({ tag, DatasetID }) => {
               }
             />
           </Col>
-          <Col span={12}>
+          <Col span={24}>
             <h1>GSEA</h1>
             <br />
             <CSVTable
@@ -210,7 +212,7 @@ const Detail = ({ tag, DatasetID }) => {
               url={
                 "/DB/2.Cellmap/" +
                 DatasetID +
-                "/2.2.scRNA/2.2.4.pyscenic/nogroup_s5_celltype_Regulon_specific_score.csv"
+                "/2.2.scRNA/2.2.4.pyscenic/s5_celltype_Regulon_specific_score.csv"
               }
             />
           </Col>
@@ -226,12 +228,15 @@ const Detail = ({ tag, DatasetID }) => {
             <br />
           </Col>
           <Col span={12}>
-            {RCDTFolderList.length === 0 ? (<div></div>) : (
-                <Dropdown menu={{ items: RCDTFolderList.map((fname, idx) => { return {key:idx, label:(<div onClick={()=>{setFolderName(fname)}}>{fname}</div>)} })
-                }}> 
+            {FolderTree.length === 0 ? (<div></div>) : (
+                <Dropdown menu={{ items: FolderTree.map((f, idx) => {
+                  let fname = Object.keys(f)[0]
+                  let il = Object.values(f)[0] 
+                  return {key:idx, label:(<div onClick={()=>{setSelected(fname);setImgList(il)}}>{fname}</div>)} 
+                })}}> 
                 <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                      <Button >{'选择啥来着？你选了：' + folderName}<DownOutlined/></Button>
+                      <Button >{'选择啥来着？你选了：' + selected}<DownOutlined/></Button>
                     </Space>
                   </a>
                 </Dropdown>
@@ -240,8 +245,8 @@ const Detail = ({ tag, DatasetID }) => {
           <Col span={12}>todo SearchBar</Col>
           <Divider/>
           <Col span={24}>{
-              RCDTImgList.length === 0 ? (<div></div>) : (
-              <ImgBar ImageList={RCDTImgList.map((img, idx) => {return "DB/2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD/" + folderName + '/' + img})} />
+              ImgList.length === 0 ? (<div></div>) : (
+              <ImgBar ImageList={ImgList.map((img, idx) => {return "/DB/2.Cellmap/" + DatasetID + "/2.3.ST/2.3.1.RCTD/" + selected + '/' + img})} />
             )
           }</Col>
 

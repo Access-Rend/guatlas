@@ -81,7 +81,7 @@ export default Home
 const styles = {
     SearchLinkImg: {
         width: '100%',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+        boxShadow: '0 0 20px rgba(0, 0, 0, 0.5)',
         transition: 'transform 0.5s',
         '&:hover': {
             transform: 'scale(1.5)',
