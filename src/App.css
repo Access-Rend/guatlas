@@ -12,3 +12,7 @@
   flex: 1;
   overflow: none; /* 添加滚动条以防止内容溢出 */
 }
+
+.hover:hover {
+  transform: scale(1.5);
+}

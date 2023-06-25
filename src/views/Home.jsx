@@ -10,19 +10,19 @@ const Home = () => {
             <Col span={1}></Col>
             <Col span={6} >
                 <a href='/SearchByCellMap' >
-                <img style={styles.SearchLinkImg} src='/icon/cell_map.png' />
+                <img className={'hover'} style={styles.SearchLinkImg} src='/icon/cell_map.png' />
                 </a>
             </Col>
             <Col span={2}></Col>
             <Col span={6}>
                 <a href='/SearchByCellGene'>
-                <img style={styles.SearchLinkImg} src='/icon/gene.png' />
+                <img className={'hover'}  style={styles.SearchLinkImg} src='/icon/gene.png' />
                 </a>
             </Col>
             <Col span={2}></Col>
             <Col span={6}>
                 <a href='/SearchByCellMicroenvironment'>
-                <img style={styles.SearchLinkImg} src='/icon/micro.png' />
+                <img className={'hover'}  style={styles.SearchLinkImg} src='/icon/micro.png' />
                 </a>
             </Col>
             <Col span={1}></Col>
@@ -82,9 +82,6 @@ const styles = {
     SearchLinkImg: {
         width: '100%',
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.5)',
-        transition: 'transform 0.5s',
-        '&:hover': {
-            transform: 'scale(1.5)',
-        }
+        transition: 'transform 0.2s',
     }
 }
