@@ -68,27 +68,16 @@ const Detail = (props) => {
   let [organ, setOrgan] = useState(SelectData.organ_list[0])
   let [cat, setCat] = useState(SelectData.category_list[0])
 
-  let [FolderTree, setFolderTree] = useState([])
-  let [selected, setSelected] = useState('')
-  let [ImgList, setImgList] = useState([])
-  let [ImgFolder, setImgFolder] = useState('')
+  let [seFolderTree, setSeFolderTree] = useState([])
+  let [seSelected, setSeSelected] = useState('')
+  let [seImgList, setSeImgList] = useState([])
+  let [seImgFolder, setSeImgFolder] = useState('')
 
-  useEffect(() =>{
-    let res = '';
-    (async () => {
-      res = await tree('/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/',2)
-      setFolderTree(res)
-    })();
-  },[])
-
-  useEffect(() =>{
-    (async () => {
-      let res = await tree(ImgFolder,1)
-      setImgList(res)
-    })();
-  },[selected, ImgFolder])
-
-  
+  let [scFolderTree, setScFolderTree] = useState([])
+  let [scSelected, setScSelected] = useState('')
+  let [scICList, setScICList] = useState([])
+  let [scICFolder, setScICFolder] = useState('')
+  let [name, setName] = useState('')
 
   const { tag, GeneSymbol } = props
   let [filter, setFilter] = useState([organ, cat])
@@ -97,7 +86,38 @@ const Detail = (props) => {
       setFilter([...filter, GeneSymbol])
   },[GeneSymbol])
 
-    
+  useEffect(() =>{
+    (async () => {
+      let se = await tree('/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/',2)
+      let sc = await tree('/3.Gene/3.2.ST/3.2.2.Spark-coexpression/',2)
+      setSeFolderTree(se)
+      setScFolderTree(sc)
+    })();
+  },[])
+
+  useEffect(() =>{
+    (async () => {
+      let res = await tree(seImgFolder,1)
+      setSeImgList(res)
+    })();
+  },[seSelected, seImgFolder])
+
+  useEffect(() =>{
+    (async () => {
+      let res = await tree(scICFolder,1)
+      setScICList(res)
+    })();
+  },[scSelected, scICFolder])
+
+  const getNameList = (list) => {
+    const uniqueFileNamesSet = new Set();
+    list.map(file => {
+      const fileName = file.split('.')[0];
+      uniqueFileNamesSet.add(fileName);
+    });
+    return Array.from(uniqueFileNamesSet);
+  }
+
   if(tag === '') return <></>
   if(tag === 'RNA') return (<div>
       <Row>
@@ -155,10 +175,10 @@ const Detail = (props) => {
 
   if(tag === 'Spatial') return (<div>
       <Row>
-          <h1>Spatial expression</h1>
-          <Col span={24}>
-            {FolderTree.length === 0 ? (<div></div>) : (
-                <Dropdown menu={{ items: FolderTree.map((f, fidx) => {
+          <Col span={24}><h1>Spatial expression</h1></Col>
+          <Col span={8}>
+            {seFolderTree.length === 0 ? (<div></div>) : (
+                <Dropdown menu={{ items: seFolderTree.map((f, fidx) => {
                   // f = {a:[1,2,3]}
                   let fn = Object.keys(f)[0]
                   let res = {
@@ -171,9 +191,8 @@ const Detail = (props) => {
                       return {
                         key: fn + ffidx,
                         label: (<div onClick={()=> {
-                          setImgFolder(`/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)
-                          setSelected(ff)
-                          console.log(ImgFolder)
+                          setSeImgFolder(`/3.Gene/3.2.ST/3.2.1.SpatialFeaturePlot/${fn}/${ff}/`)
+                          setSeSelected(ff)
                         }}>{ff}</div>),
                       }
                     })
@@ -184,25 +203,85 @@ const Detail = (props) => {
                   
                 <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                      <Button >{'选择啥来着'+selected}<DownOutlined /></Button>
+                      <Button >{seSelected}<DownOutlined /></Button>
                     </Space>
                   </a>
                 </Dropdown>
             )}
           </Col>
-          <Col span={12}>todo SearchBar</Col>
+          <Col span={16} />
+
           <Divider/>
-          <Col span={24}>{
-              ImgList.length === 0 ? (<div></div>) : (
-              <ImgBar ImageList={ImgList.map((img, idx) => {return 'DB' + ImgFolder + '/' + img})} />
-            )
-          }</Col>
+          <Col span={24}>
+            <ImgBar ImageList={seImgList.map((img, idx) => {return 'DB' + seImgFolder + '/' + img})} />
+          </Col>
       </Row>
 
       <Row>
-          <h1>Spatially co-expressed genes</h1>
+          <Col span={24}><h1>Spatially co-expressed genes</h1></Col>
+         
+          <Col span={8}>
+            {scFolderTree.length === 0 ? (<div></div>) : (
+                <Dropdown menu={{ items: scFolderTree.map((f, fidx) => {
+                  // f = {a:[1,2,3]}
+                  let fn = Object.keys(f)[0]
+                  let res = {
+                    key: fn,
+                    label: fn,
+                  }
+          
+                  if(Object.values(f)[0].length > 0){
+                    res['children'] = Object.values(f)[0].map((ff, ffidx) => {
+                      return {
+                        key: fn + ffidx,
+                        label: (<div onClick={()=> {
+                          setScICFolder(`/3.Gene/3.2.ST/3.2.2.Spark-coexpression/${fn}/${ff}/`)
+                          setScSelected(ff)
+                          console.log(scICList)
+                        }}>{ff}</div>),
+                      }
+                    })
+                  }
+          
+                  return res
+                })}}>
+                  
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <Button >{scSelected}<DownOutlined /></Button>
+                    </Space>
+                  </a>
+                </Dropdown>
+            )}
+          </Col>
+          <Col span={8} /><Col span={8} />
+
+          <Col span={8}>
+            {
+              !scICList ? <div></div> : (
+                <Dropdown menu={{ items: getNameList(scICList).map((name, idx) => {
+                  return {
+                    label: <div onClick={()=>{setName(name)}}>{name}</div>,
+                    key: idx,
+                  }
+                })}}>
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <Button >{name}<DownOutlined /></Button>
+                    </Space>
+                  </a>
+                </Dropdown>
+              )
+            }
+          </Col>
+          <Col span={8} /><Col span={8} />
+
           <Col span={24}>
-            {/* 不懂了 */}
+            <ImgBar ImageList={['DB' + scICFolder + '/' + name + '.png']} />
+          </Col>
+
+          <Col span={24}>
+            <CSVTable url={'DB' + scICFolder + '/' + name + '.csv'}/>
           </Col>
       </Row>
 

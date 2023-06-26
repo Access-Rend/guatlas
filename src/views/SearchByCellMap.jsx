@@ -193,7 +193,6 @@ const Detail = ({ tag, DatasetID }) => {
         </Row>
 
         <Row>
-          {/* todo 滑动图 */}
           <Col span={24}>
             <h1>TF regulatory network</h1>
           </Col>
@@ -227,7 +226,7 @@ const Detail = ({ tag, DatasetID }) => {
             <h1>Spatial localization of celltypes</h1>
             <br />
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             {FolderTree.length === 0 ? (<div></div>) : (
                 <Dropdown menu={{ items: FolderTree.map((f, idx) => {
                   let fname = Object.keys(f)[0]
@@ -236,13 +235,13 @@ const Detail = ({ tag, DatasetID }) => {
                 })}}> 
                 <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                      <Button >{'选择啥来着？你选了：' + selected}<DownOutlined/></Button>
+                      <Button >{selected}<DownOutlined/></Button>
                     </Space>
                   </a>
                 </Dropdown>
             )}
           </Col>
-          <Col span={12}>todo SearchBar</Col>
+          <Col span={16} />
           <Divider/>
           <Col span={24}>{
               ImgList.length === 0 ? (<div></div>) : (
