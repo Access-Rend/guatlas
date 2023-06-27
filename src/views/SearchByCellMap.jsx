@@ -35,7 +35,7 @@ const SearchByCellMap = () => {
       <Row>
         <Col span={6}>
           <img src='/icon/cell_map.png' style={{maxWidth:'100%'}}/>
-          <SelectBar organ={organ} cat={cat} dataType={dataType} setOrgan={setOrgan} setCat={setCat} setDataType={setDataType} />
+          <SelectBar organ={organ} cat={cat} dataType={dataType} setOrgan={setOrgan} setCat={setCat} setDataType={setDataType}/>
         </Col>
 
         <Col span={18}>
@@ -65,6 +65,7 @@ const SearchByCellMap = () => {
       <Row>
         <Col span={12}>
           <Button
+            style={{transform: 'scale(1.5'}}
             onClick={() => {
               setDetailTag("RNA")
             }}
@@ -75,11 +76,12 @@ const SearchByCellMap = () => {
             Singile cell RNA result
           </Button>
           <ButtonDescription>
-            社交媒体的兴起给人们带来了更多的连接和交流机会，然而，它也引发了一系列与孤独有关的问题。在这个数字化时代，许多人发现自己陷入了一种与他人隔离的状态。这篇文章将探讨社交媒体对孤独的影响，并提出一些应对的建议。
+            Annotation, Proportion, DEGs, GSEA,Cell-cell communication,TF regulatory network of celltypes
           </ButtonDescription>
         </Col>
         <Col span={12}>
           <Button
+            style={{transform: 'scale(1.5'}}
             onClick={() => {
               setDetailTag("Spatial")
             }}
@@ -90,7 +92,7 @@ const SearchByCellMap = () => {
             Spatial Transcriptomic result
           </Button>
           <ButtonDescription>
-            社交媒体的兴起给人们带来了更多的连接和交流机会，然而，它也引发了一系列与孤独有关的问题。在这个数字化时代，许多人发现自己陷入了一种与他人隔离的状态。这篇文章将探讨社交媒体对孤独的影响，并提出一些应对的建议。
+            Spatial location, Spatial interaction of celltypes
           </ButtonDescription>
         </Col>
       </Row>
@@ -127,6 +129,7 @@ const Detail = ({ tag, DatasetID }) => {
       <div>
         <Row>
           <Col span={24}>
+            <h1>Cell map</h1>
             <ImgBar ImageList={["/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/04umap_Group.png", "/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/05Celltype_dopplot.png", "/DB/2.Cellmap/" + DatasetID + "/2.1.Cellmap/06dodge_bar.png"]}/>
           </Col>
           <Col span={24}>
@@ -134,11 +137,7 @@ const Detail = ({ tag, DatasetID }) => {
             <br />
             <CSVTable
               onClick={() => {}}
-              url={
-                "/DB/2.Cellmap/" +
-                DatasetID +
-                "/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv"
-              }
+              url={"/DB/2.Cellmap/" + DatasetID + "/2.2.scRNA/2.2.1.DEG/nogroup_DEG_output20230602.csv"}
             />
           </Col>
           <Col span={24}>
@@ -159,11 +158,7 @@ const Detail = ({ tag, DatasetID }) => {
             <h2>count</h2>
             <Image
               style={{ width: "80%" }}
-              src={
-                "/DB/2.Cellmap/" +
-                DatasetID +
-                "/2.2.scRNA/2.2.3.cellchat/count.png"
-              }
+              src={"/DB/2.Cellmap/" + DatasetID + "/2.2.scRNA/2.2.3.cellchat/count.png"}
               fallback="/images/error.png"
             />
           </Col>

@@ -9,7 +9,9 @@ import { tree } from "../hooks/DBAPI"
 import ButtonDescription from "../components/ButtonDescription";
 
 const SearchByCellGene = () => {
-    
+    let [organ, setOrgan] = useState(SelectData.organ_list[0])
+    let [cat, setCat] = useState(SelectData.category_list[0])
+
     let [GeneSymbol, setGeneSymbol] = useState('')
     let [detailTag, setDetailTag] = useState('RNA')
   
@@ -17,39 +19,46 @@ const SearchByCellGene = () => {
       <div>
           <Row>
             <Col span={6}><img src='/icon/gene.png' style={{maxWidth:'100%'}}/></Col>
-            <Col span={16}>
-              <Input.Search
-                placeholder="input a Gene Symbol"
-                allowClear
-                enterButton="Search"
-                size="large"
-                value={GeneSymbol}
-                onChange={(e)=>{setGeneSymbol(e.target.value)}}
-              />
+            <Col span={18}>
+              <div style={{transformOrigin: 'left top', transform:'scale(2)', width:'50%'}}>
+                <Input.Search
+                  placeholder="input a Gene Symbol"
+                  allowClear
+                  enterButton="Search"
+                  size="large"
+                  value={GeneSymbol}
+                  onChange={(e)=>{setGeneSymbol(e.target.value)}}
+                />
+              </div>
             </Col>
             <Divider/>
+            
+            <Col span={6}><SelectBar organ={organ} cat={cat} setOrgan={setOrgan} setCat={setCat}/></Col>
+            <Col span={18}/>
 
             <Col span={12}>
               <Button
+                style={{transform: 'scale(1.5'}}
                 onClick={()=>{setDetailTag("RNA")}}
                 size="large" type="primary" icon={<FullscreenOutlined />}
               >
                 Singile cell RNA result
               </Button>
             <ButtonDescription>
-              社交媒体的兴起给人们带来了更多的连接和交流机会，然而，它也引发了一系列与孤独有关的问题。在这个数字化时代，许多人发现自己陷入了一种与他人隔离的状态。这篇文章将探讨社交媒体对孤独的影响，并提出一些应对的建议。
+              DEGs, GSEA, Cell-cell communication, TF regulatory network across different life states
             </ButtonDescription>
             </Col>
 
             <Col span={12}>
               <Button
+                style={{transform: 'scale(1.5'}}
                 onClick={()=>{setDetailTag("Spatial")}}
                 size="large" type="primary" icon={<FullscreenOutlined />}
               >
                 Spatial Transcriptomic result
               </Button>
             <ButtonDescription>
-              社交媒体的兴起给人们带来了更多的连接和交流机会，然而，它也引发了一系列与孤独有关的问题。在这个数字化时代，许多人发现自己陷入了一种与他人隔离的状态。这篇文章将探讨社交媒体对孤独的影响，并提出一些应对的建议。
+              Spatial expression, Spatially co-expressed genes of the DEGs
             </ButtonDescription>
             </Col>
               
@@ -57,7 +66,7 @@ const SearchByCellGene = () => {
         <br />
         <hr />
   
-        <Detail tag={detailTag} GeneSymbol={GeneSymbol} />
+        <Detail organ={organ} cat={cat} tag={detailTag} GeneSymbol={GeneSymbol} />
       </div>
     )
 }
@@ -65,9 +74,6 @@ const SearchByCellGene = () => {
 export default SearchByCellGene
 
 const Detail = (props) => {
-  let [organ, setOrgan] = useState(SelectData.organ_list[0])
-  let [cat, setCat] = useState(SelectData.category_list[0])
-
   let [seFolderTree, setSeFolderTree] = useState([])
   let [seSelected, setSeSelected] = useState('')
   let [seImgList, setSeImgList] = useState([])
@@ -79,7 +85,7 @@ const Detail = (props) => {
   let [scICFolder, setScICFolder] = useState('')
   let [name, setName] = useState('')
 
-  const { tag, GeneSymbol } = props
+  const { tag, GeneSymbol, organ, cat } = props
   let [filter, setFilter] = useState([organ, cat])
   useEffect(()=>{ 
     if(GeneSymbol !== '')
@@ -120,14 +126,6 @@ const Detail = (props) => {
 
   if(tag === '') return <></>
   if(tag === 'RNA') return (<div>
-      <Row>
-          <Col span={24}>
-            <SelectBar organ={organ} cat={cat} setOrgan={setOrgan} setCat={setCat}/>
-          </Col>
-          
-      </Row>
-
-
       <Row>
           <Col span={24}>
             <h1>DEG</h1>

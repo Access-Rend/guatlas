@@ -8,7 +8,7 @@ const SelectUnit = ({ value, onChange, selectList, direction = "" }) => {
         value={value}
         buttonStyle="solid"
       >
-        <Space direction={direction} align="start">
+        <Space direction={direction} align="start" style={{paddingLeft:'5vw'}}>
           {selectList.map((item, idx) => (
             <Radio style={{fontSize: '18px'}} value={item} key={item}>
               {item}
@@ -70,7 +70,8 @@ export { SelectBar }
 const styles = {
   SelectTitle: {
     fontSize: "25px",
-    textAlign: "left",
     fontWeight: "500",
+    textAlign: 'left',
+    paddingLeft:'5vw',
   },
 }
