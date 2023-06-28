@@ -33,6 +33,7 @@ const App = () => {
             <Route exact path='/Download' element={<Download />} />
             <Route exact path='/Help' element={<Help />} />
             <Route exact path='/About' element={<About />} />
+            <Route exact path='*' element={<p>无法找到资源</p>} />
 
           </Routes>
         </div>

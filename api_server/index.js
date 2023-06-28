@@ -1,16 +1,16 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
+const path = require("path");
 const readdir = require("@jsdevtools/readdir-enhanced");
 const { dir } = require("console");
 const { type } = require("os");
 const db_path = "../public/db/";
 
-
-const tree_dir = (path = '', depth = 1) => {
-  let dir_list = fs.readdirSync(path)
-  if(depth <= 1){
-    return dir_list
+const tree_dir = (path = "", depth = 1) => {
+  let dir_list = fs.readdirSync(path);
+  if (depth <= 1) {
+    return dir_list;
   }
 
   dir_list = dir_list.map((name, idx) => {
@@ -22,17 +22,16 @@ const tree_dir = (path = '', depth = 1) => {
   return { [path.split("/").filter(Boolean).pop()]: dir_list };
 };
 
-app.get("/api/tree/", (req,res) => {
-
-  let r = tree_dir(db_path + req.query['path'], req.query['depth'])
-  if(req.query['depth'] > 1) {
-    r = r[Object.keys(r)[0]]
-    r = Object.keys(r).map((key)=>{
-      return {[Object.keys(r[key])] : r[key][Object.keys(r[key])]}
-    })
+app.get("/api/tree/", (req, res) => {
+  let r = tree_dir(db_path + req.query["path"], req.query["depth"]);
+  if (req.query["depth"] > 1) {
+    r = r[Object.keys(r)[0]];
+    r = Object.keys(r).map((key) => {
+      return { [Object.keys(r[key])]: r[key][Object.keys(r[key])] };
+    });
   }
-  res.json(r)
-})
+  res.json(r);
+});
 function listDirectory(path, deep) {
   try {
     const files = readdir.readdirSync(path, { deep });
@@ -64,6 +63,12 @@ app.get("/api/db/*", (req, res) => {
   res.json(listDirectory(path, deep));
 });
 
-app.listen(8090, () => {
-  console.log("Server start at 8090");
+app.use(express.static(path.join(__dirname, "../", "dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../", "dist", "index.html"));
+});
+
+app.listen(8888, () => {
+  console.log("Server start at 8888 http://localhost:8888");
 });
