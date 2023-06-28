@@ -1,6 +1,35 @@
 import { Col, Divider, Row } from 'antd'
 import React, { useEffect, useState } from 'react'
-import Human from '../components/Human'
+
+const Human = () => {
+    let [selected, setSelected] = useState(1)
+    const IBList = [1,2,3,4,5,6,7,8,9,10,11]
+
+    const InvisibleButton = (props) => {
+        let {id} = props
+        return (
+            <div style={{ height: '8.5%', width: '40%'}} onClick={()=>{setSelected(id)}} >
+                </div>
+        )
+    }
+
+    return (
+        <div id='box' style={{
+            backgroundImage: `url(/human/human-${selected}.svg)`,
+            backgroundSize: '100% 100%',
+            backgroundRepeat: 'no-repeat',
+            position: 'relative',
+            width: '100vw',
+            height: '80vh',
+            display: 'flex', flexDirection: 'column',
+            paddingTop: '3vh'
+          }}>
+            {IBList.map((i, idx) => {
+                return (<InvisibleButton key={idx} style={{height: '9%',}} id={i}/>)
+            })}
+        </div>
+    )
+}
 
 const Home = () => {
     return (<div>
@@ -10,31 +39,28 @@ const Home = () => {
             <Col span={1}></Col>
             <Col span={6} >
                 <a href='/SearchByCellMap' >
-                <img className={'hover'} style={styles.SearchLinkImg} src='/icon/cell_map.png' />
+                <img className={'HomeSearchLink'} style={styles.SearchLinkImg} src='/icon/cell_map.png' />
                 </a>
             </Col>
             <Col span={2}></Col>
             <Col span={6}>
                 <a href='/SearchByCellGene'>
-                <img className={'hover'}  style={styles.SearchLinkImg} src='/icon/gene.png' />
+                <img className={'HomeSearchLink'}  style={styles.SearchLinkImg} src='/icon/gene.png' />
                 </a>
             </Col>
             <Col span={2}></Col>
             <Col span={6}>
                 <a href='/SearchByCellMicroenvironment'>
-                <img className={'hover'}  style={styles.SearchLinkImg} src='/icon/micro.png' />
+                <img className={'HomeSearchLink'}  style={styles.SearchLinkImg} src='/icon/micro.png' />
                 </a>
             </Col>
             <Col span={1}></Col>
         </Row>
         <br/>
-        <br/>
-        <br/>
-        <br/>
 
         <Row>
             <Col span={24}>
-                <img src='/human/human-1.svg'/>
+                <Human/>
             </Col>
         </Row>
         

@@ -144,6 +144,7 @@ export default function CSVTable(props) {
   return (
     <div style={tableStyle}>
       <SearchInput onSearch={handleSearch} />
+      <br />
       <ProTable {...configs}></ProTable>
     </div>
   );
@@ -153,13 +154,15 @@ const SearchInput = (props) => {
   const { onSearch } = props;
   const { Search } = Input;
   return (
-    <Search
-      placeholder="input search text"
-      allowClear
-      enterButton="Search"
-      size="large"
-      onSearch={onSearch}
-    />
+    <div style={{transformOrigin: 'left top', transform:'scale(2)', width:'50%'}}>
+      <Search
+        placeholder="input search text"
+        allowClear
+        enterButton="Search"
+        size="large"
+        onSearch={onSearch}
+      />
+    </div>
   );
 };
 
